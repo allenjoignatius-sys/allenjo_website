@@ -1,142 +1,612 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>allenjo.in</title>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Allen — Portfolio</title>
+<meta name="description" content="Allen Binoy — 2nd-year Chemical Engineering student at NIT Calicut. Reactor modeling, machine learning and quant systems." />
+<link rel="icon" href="favicon-circular.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-circular-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-circular-16x16.png" />
+<link rel="apple-touch-icon" href="apple-touch-icon-circular.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   TOKENS
+============================================================ */
+:root{
+  --paper:#E8E3D7;
+  --paper-2:#DED8C8;
+  --ink:#141210;
+  --ink-soft:#3a3631;
+  --accent:#FF3B00;        /* vermillion */
+  --accent-2:#1f2bff;      /* electric blue, used sparingly */
+  --line:#141210;
+  --display:'Anton',Impact,sans-serif;
+  --sans:'Space Grotesk',system-ui,sans-serif;
+  --mono:'Space Mono',ui-monospace,monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --gutter:clamp(16px,4vw,64px);
+}
 
-        body, html {
-            height: 100%;
-            margin: 0;
-            background-color: #E3DDD1; /* Light beige matching the image */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            color: #232323;
-        }
-        
-        .main-container {
-            width: 90%;
-            max-width: 1000px;
-            min-height: 500px;
-            border: 1px solid #333;
-            display: flex;
-            padding: 40px;
-            gap: 40px;
-        }
+*{box-sizing:border-box}
+html{ -webkit-font-smoothing:antialiased; scroll-behavior:smooth }
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-weight:400;
+  line-height:1.4;
+  overflow-x:hidden;
+  cursor:auto;
+}
+body.locked{ overflow:hidden; height:100vh }
+a{ color:inherit; text-decoration:none }
+img{ display:block; max-width:100%}
+::selection{ background:var(--accent); color:var(--paper) }
 
-        .left-column {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
+/* ============================================================
+   GRAIN + PROGRESS + GRID OVERLAY
+============================================================ */
+.grain{
+  position:fixed; inset:0; z-index:9000; pointer-events:none;
+  opacity:.05; mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.progress{
+  position:fixed; top:0; left:0; height:4px; width:0%;
+  background:var(--accent); z-index:8500;
+  mix-blend-mode:normal;
+}
 
-        .text-content h1 {
-            font-size: 4.5rem;
-            margin: 0 0 20px 0;
-            font-weight: 700;
-            letter-spacing: -1px;
-            color: #232323;
-        }
+/* ============================================================
+   CUSTOM CURSOR
+============================================================ */
+.cursor-dot,.cursor-ring{
+  position:fixed; top:0; left:0; z-index:9500; pointer-events:none;
+  border-radius:50%; transform:translate(-50%,-50%);
+  will-change:transform; mix-blend-mode:difference;
+}
+.cursor-dot{ width:7px; height:7px; background:var(--paper) }
+.cursor-ring{
+  width:46px; height:46px; border:1px solid var(--paper);
+  transition:width .3s var(--ease),height .3s var(--ease),background .3s var(--ease);
+  display:grid; place-items:center;
+}
+.cursor-ring span{
+  font-family:var(--mono); font-size:9px; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--paper); opacity:0;
+  transition:opacity .2s ease;
+}
+body.hovering .cursor-ring{ width:90px; height:90px; background:var(--paper) }
+body.hovering .cursor-ring span{ opacity:1; color:var(--ink) }
+body.hovering .cursor-dot{ opacity:0 }
+@media (hover:none),(pointer:coarse){ .cursor-dot,.cursor-ring{ display:none } }
 
-        .text-content p {
-            font-size: 1.3rem;
-            margin: 0;
-            font-weight: 300;
-            color: #333;
-        }
+/* ============================================================
+   LOADER
+============================================================ */
+.loader{
+  position:fixed; inset:0; z-index:9999; background:var(--ink);
+  color:var(--paper); display:flex; align-items:flex-end; justify-content:space-between;
+  padding:var(--gutter); transition:transform 1s var(--ease);
+}
+.loader.done{ transform:translateY(-101%) }
+.loader__word{
+  font-family:var(--display); font-size:clamp(4rem,18vw,16rem);
+  line-height:.85; text-transform:uppercase;
+}
+.loader__count{
+  font-family:var(--mono); font-size:clamp(2rem,8vw,6rem); font-weight:700;
+}
+.loader__bar{
+  position:absolute; left:0; bottom:0; height:3px; width:0%; background:var(--accent);
+}
 
-        .social-icons {
-            display: flex;
-            gap: 15px;
-        }
+/* ============================================================
+   NAV
+============================================================ */
+.nav{
+  position:fixed; top:0; left:0; width:100%; z-index:8000;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px var(--gutter); mix-blend-mode:difference; color:var(--paper);
+}
+.nav__logo{ font-family:var(--display); font-size:1.7rem; letter-spacing:.02em; text-transform:uppercase; display:inline-flex; gap:.25em }
+.nav__logo sup{ font-family:var(--mono); font-size:.5em; top:-1.2em }
+.nav__links{ display:flex; gap:clamp(14px,2vw,34px); align-items:center; font-family:var(--mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.06em }
+.nav__links a{ position:relative; padding:4px 0 }
+.nav__links a::after{ content:""; position:absolute; left:0; bottom:0; width:0; height:1px; background:currentColor; transition:width .4s var(--ease) }
+.nav__links a:hover::after{ width:100% }
+.nav__clock{ opacity:.75 }
+@media (max-width:720px){ .nav__links a:not(.nav__clock){ display:none } }
 
-        .social-icons a {
-            color: #232323;
-            text-decoration: none;
-            transition: opacity 0.3s ease;
-            display: inline-flex;
-        }
+/* ============================================================
+   LAYOUT HELPERS
+============================================================ */
+.section{ padding:clamp(70px,12vh,160px) var(--gutter); border-top:1px solid var(--line); position:relative }
+.section__head{ display:flex; align-items:baseline; gap:18px; margin-bottom:clamp(32px,6vh,80px); flex-wrap:wrap }
+.section__index{ font-family:var(--mono); font-size:.8rem; color:var(--accent) }
+.section__label{
+  font-family:var(--display); text-transform:uppercase; line-height:.85;
+  font-size:clamp(2.6rem,9vw,8rem); margin:0; letter-spacing:.01em;
+}
 
-        .social-icons a:hover {
-            opacity: 0.6;
-        }
+/* ============================================================
+   HERO
+============================================================ */
+.hero{ min-height:100svh; display:flex; flex-direction:column; justify-content:space-between; padding:clamp(90px,14vh,150px) var(--gutter) 28px }
+.hero__top{ display:flex; justify-content:space-between; font-family:var(--mono); font-size:.74rem; text-transform:uppercase; letter-spacing:.06em; flex-wrap:wrap; gap:10px }
+.hero__top span{ max-width:30ch }
+.hero__title{
+  font-family:var(--display); text-transform:uppercase; margin:auto 0;
+  font-size:clamp(5rem,27vw,24rem); line-height:.8; letter-spacing:.005em;
+  display:flex; flex-wrap:wrap;
+}
+.hero__title .char{ display:inline-block; transform:translateY(115%); transition:transform .9s var(--ease) }
+.hero__title .char:nth-child(1){ transition-delay:.05s }
+.hero__title .char:nth-child(2){ transition-delay:.11s }
+.hero__title .char:nth-child(3){ transition-delay:.17s }
+.hero__title .char:nth-child(4){ transition-delay:.23s }
+.hero__title .char:nth-child(5){ transition-delay:.29s }
+body.loaded .hero__title .char{ transform:translateY(0) }
+.hero__title .char:hover{ color:var(--accent); transform:translateY(-6%) skewX(-7deg); transition:transform .25s var(--ease),color .25s }
+.hero__bottom{ display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap }
+.hero__sub{ max-width:34ch; font-size:clamp(1rem,1.6vw,1.35rem); font-weight:300; margin:0 }
+.hero__sub b{ font-weight:600 }
+.hero__scroll{ font-family:var(--mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.1em; display:flex; align-items:center; gap:10px }
+.hero__scroll i{ width:34px; height:1px; background:var(--ink); display:inline-block; position:relative; overflow:hidden }
+.hero__scroll i::after{ content:""; position:absolute; inset:0; background:var(--accent); animation:slide 1.8s var(--ease) infinite }
+@keyframes slide{ 0%{transform:translateX(-100%)} 60%,100%{transform:translateX(100%)} }
 
-        .social-icons svg {
-            width: 32px;
-            height: 32px;
-            fill: currentColor;
-        }
+/* ============================================================
+   MARQUEE
+============================================================ */
+.marquee{ overflow:hidden; border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--ink); color:var(--paper) }
+.marquee__track{ display:inline-flex; white-space:nowrap; will-change:transform; animation:marq 26s linear infinite }
+.marquee--rev .marquee__track{ animation-direction:reverse; animation-duration:32s }
+.marquee:hover .marquee__track{ animation-play-state:paused }
+.marquee__track span{ font-family:var(--display); text-transform:uppercase; font-size:clamp(2rem,6vw,5rem); padding:14px 28px; line-height:1; display:inline-flex; align-items:center; gap:28px }
+.marquee__track span::after{ content:"✱"; color:var(--accent); font-size:.7em }
+@keyframes marq{ to{ transform:translateX(-50%) } }
 
-        .right-column {
-            flex: 0 0 40%; 
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-        }
+/* ============================================================
+   ABOUT
+============================================================ */
+.about__grid{ display:grid; grid-template-columns:1.4fr .9fr; gap:clamp(28px,5vw,72px); align-items:start }
+.about__lead{ font-size:clamp(1.5rem,3.4vw,3rem); font-weight:300; line-height:1.18; margin:0 }
+.about__lead .word{ display:inline-block; opacity:0; transform:translateY(40%); transition:opacity .6s var(--ease),transform .6s var(--ease) }
+.about__lead.is-visible .word{ opacity:1; transform:none }
+.about__lead b{ font-weight:600; color:var(--accent) }
+.about__side{ position:sticky; top:120px }
+.about__photo{ margin:0; overflow:hidden; border:1px solid var(--line); position:relative }
+.about__photo img{ width:100%; aspect-ratio:1/1.08; object-fit:cover; filter:grayscale(1) contrast(1.08); transition:filter .6s var(--ease),transform .9s var(--ease); transform:scale(1.04) }
+.about__photo::after{ content:""; position:absolute; inset:0; background:var(--accent); mix-blend-mode:screen; opacity:.18; transition:opacity .6s ease }
+.about__photo:hover img{ filter:grayscale(0) contrast(1); transform:scale(1) }
+.about__photo:hover::after{ opacity:0 }
+.about__cap{ font-family:var(--mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; display:flex; justify-content:space-between; margin-top:10px; opacity:.7 }
+.about__name{ font-family:var(--display); text-transform:uppercase; font-size:clamp(1.5rem,2.4vw,2.1rem); line-height:1; letter-spacing:.01em; margin:24px 0 0 }
+.about__meta{ list-style:none; margin:14px 0 0; padding:0; display:grid; gap:0 }
+.about__meta li{ display:flex; justify-content:space-between; gap:14px; padding:12px 0; border-top:1px solid var(--line); font-family:var(--mono); font-size:.8rem; text-transform:uppercase; letter-spacing:.03em }
+.about__meta li span:last-child{ color:var(--ink-soft) }
+@media (max-width:820px){ .about__grid{ grid-template-columns:1fr } .about__side{ position:static } }
 
-        .right-column img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+/* ============================================================
+   ROWS (education / experience / work)
+============================================================ */
+.rows{ border-bottom:1px solid var(--line) }
+.row{
+  position:relative; display:grid; grid-template-columns:64px 1.5fr 1.1fr 96px;
+  gap:18px; align-items:center; padding:clamp(20px,3vw,40px) 8px;
+  border-top:1px solid var(--line); overflow:hidden;
+  transition:color .4s var(--ease); color:var(--ink);
+}
+.row::before{ content:""; position:absolute; inset:0; background:var(--ink); transform:translateY(101%); transition:transform .5s var(--ease); z-index:-1 }
+.row:hover{ color:var(--paper) }
+.row:hover::before{ transform:translateY(0) }
+.row__no{ font-family:var(--mono); font-size:.8rem; color:var(--accent) }
+.row__title{ font-family:var(--display); text-transform:uppercase; font-size:clamp(1.5rem,4vw,3.2rem); line-height:.9; display:flex; flex-direction:column; gap:12px }
+.row__tags{ display:flex; gap:7px; flex-wrap:wrap }
+.tag{ font-family:var(--mono); font-weight:400; text-transform:uppercase; font-size:.6rem; letter-spacing:.08em; border:1px solid currentColor; padding:4px 9px; border-radius:100px; line-height:1 }
+.tag--wip{ color:var(--accent); border-color:var(--accent) }
+.row__meta{ font-size:.95rem; font-weight:300; max-width:42ch }
+.row__year{ font-family:var(--mono); font-size:.78rem; text-align:right; line-height:1.3 }
+.row__arrow{ position:absolute; right:8px; top:50%; transform:translate(20px,-50%); opacity:0; transition:.4s var(--ease); font-size:1.4rem }
+.row:hover .row__arrow{ transform:translate(0,-50%); opacity:1; color:var(--accent) }
+.row--soon{ cursor:default }
+.row--soon:hover::before{ transform:translateY(101%) }
+.row--soon:hover{ color:var(--ink) }
+.row--soon .row__arrow{ transform:translate(0,-50%); opacity:.45 }
+@media (max-width:720px){
+  .row{ grid-template-columns:40px 1fr; gap:6px 12px }
+  .row__meta{ grid-column:2 }
+  .row__year{ grid-column:2; text-align:left }
+}
 
-        /* Mobile responsiveness */
-        @media (max-width: 768px) {
-            .main-container {
-                flex-direction: column;
-                height: auto;
-                padding: 20px;
-            }
-            .right-column {
-                width: 100%;
-                margin-top: 30px;
-            }
-            .text-content h1 {
-                font-size: 3rem;
-            }
-            .text-content p {
-                font-size: 1rem;
-            }
-        }
-    </style>
+/* ============================================================
+   SKILLS
+============================================================ */
+.skills__grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); border-left:1px solid var(--line); border-top:1px solid var(--line) }
+.skill{
+  border-right:1px solid var(--line); border-bottom:1px solid var(--line);
+  padding:22px 18px; min-height:130px; display:flex; flex-direction:column; justify-content:space-between;
+  opacity:0; transform:translateY(24px); transition:opacity .5s var(--ease),transform .5s var(--ease),background .3s ease,color .3s ease;
+}
+.skills__grid.is-visible .skill{ opacity:1; transform:none }
+.skill__no{ font-family:var(--mono); font-size:.72rem; color:var(--accent) }
+.skill__name{ font-family:var(--display); text-transform:uppercase; font-size:1.5rem; line-height:.95 }
+.skill:hover{ background:var(--ink); color:var(--paper) }
+
+/* ============================================================
+   CONTACT / FOOTER
+============================================================ */
+.footer{ background:var(--ink); color:var(--paper); padding:clamp(60px,12vh,150px) var(--gutter) 28px; border-top:1px solid var(--line) }
+.footer__kicker{ font-family:var(--mono); font-size:.78rem; text-transform:uppercase; letter-spacing:.1em; color:var(--accent) }
+.footer__mail{ font-family:var(--display); text-transform:uppercase; font-size:clamp(2.4rem,11vw,9rem); line-height:.85; margin:14px 0 0; display:inline-block; position:relative }
+.footer__mail::after{ content:""; position:absolute; left:0; bottom:.06em; width:0; height:.06em; background:var(--accent); transition:width .5s var(--ease) }
+.footer__mail:hover::after{ width:100% }
+.footer__row{ display:flex; justify-content:space-between; align-items:flex-end; gap:24px; flex-wrap:wrap; margin-top:clamp(40px,8vh,90px) }
+.footer__email{ color:var(--accent); white-space:nowrap; border-bottom:1px solid transparent; transition:border-color .3s ease }
+.footer__email:hover{ border-color:var(--accent) }
+.socials{ display:flex; gap:14px }
+.socials a{ width:54px; height:54px; border:1px solid var(--paper); display:grid; place-items:center; transition:background .3s ease,color .3s ease,transform .3s var(--ease) }
+.socials a:hover{ background:var(--accent); border-color:var(--accent); color:var(--ink); transform:translateY(-4px) }
+.socials svg{ width:24px; height:24px; fill:currentColor }
+.footer__base{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-top:48px; padding-top:18px; border-top:1px solid #ffffff2a; font-family:var(--mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; opacity:.8 }
+.totop{ font-family:var(--mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; display:inline-flex; gap:8px; align-items:center }
+
+/* ============================================================
+   REVEAL UTILITY
+============================================================ */
+[data-reveal]{ opacity:0; transform:translateY(34px); transition:opacity .8s var(--ease),transform .8s var(--ease) }
+[data-reveal].is-visible{ opacity:1; transform:none }
+
+/* ============================================================
+   REDUCED MOTION
+============================================================ */
+@media (prefers-reduced-motion:reduce){
+  *{ animation:none !important; transition-duration:.001s !important }
+  .hero__title .char{ transform:none }
+  [data-reveal],.about__lead .word,.skill{ opacity:1; transform:none }
+  .cursor-dot,.cursor-ring{ display:none }
+}
+</style>
 </head>
 <body>
-    <div class="main-container">
-        <!-- Left Side: Text and Icons -->
-        <div class="left-column">
-            <div class="text-content">
-                <h1>ALLEN</h1>
-                <p>*INSERT GIBBERISH AND JARGON*</p>
-            </div>
-            
-            <div class="social-icons">
-                <!-- Instagram Icon -->
-                <a href="https://www.instagram.com/allen_.jo/" target="_blank" aria-label="Instagram">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M16.98 0a6.9 6.9 0 0 1 5.08 1.98A6.94 6.94 0 0 1 24 7.02v9.96c0 2.08-.68 3.87-1.98 5.13A7.14 7.14 0 0 1 16.94 24H7.06a7.06 7.06 0 0 1-5.03-1.89A6.96 6.96 0 0 1 0 16.94V7.02C0 2.8 2.8 0 7.02 0h9.96zm.05 2.23H7.06c-1.45 0-2.7.43-3.53 1.25a4.82 4.82 0 0 0-1.3 3.54v9.92c0 1.5.43 2.7 1.3 3.58a5 5 0 0 0 3.53 1.25h9.88a5 5 0 0 0 3.53-1.25 4.73 4.73 0 0 0 1.4-3.54V7.02a5 5 0 0 0-1.3-3.49 4.82 4.82 0 0 0-3.54-1.3zM12 5.76c3.39 0 6.2 2.8 6.2 6.2a6.2 6.2 0 0 1-12.4 0 6.2 6.2 0 0 1 6.2-6.2zm0 2.22a3.99 3.99 0 0 0-3.97 3.97A3.99 3.99 0 0 0 12 15.92a3.99 3.99 0 0 0 3.97-3.97A3.99 3.99 0 0 0 12 7.98zm5.34-2.54a1.44 1.44 0 1 1 0 2.88 1.44 1.44 0 0 1 0-2.88z"/>
-                    </svg>
-                </a>
-                
-                <!-- LinkedIn Icon -->
-                <a href="https://www.linkedin.com/in/allen-binoy-585776324" target="_blank" aria-label="LinkedIn">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
-        
-        <!-- Right Side: Image -->
-        <div class="right-column">
-            <img src="your-picture.jpg" alt="Allen">
-        </div>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<div class="cursor-ring" id="ring" aria-hidden="true"><span id="ringTxt"></span></div>
+<div class="cursor-dot" id="dot" aria-hidden="true"></div>
+
+<!-- LOADER -->
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader__word">Allen</div>
+  <div class="loader__count" id="count">000</div>
+  <div class="loader__bar" id="loadbar"></div>
+</div>
+
+<!-- NAV -->
+<header class="nav">
+  <a href="#top" class="nav__logo" data-magnetic>Allen<sup>©</sup></a>
+  <nav class="nav__links">
+    <a href="#about">About</a>
+    <a href="#experience">Work</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+    <span class="nav__clock" id="clock">--:--:--</span>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__top">
+      <span>B.Tech Chemical Engineering, 2nd year — NIT Calicut. Reactors, models, and a fair bit of Python.</span>
+      <span>Portfolio<br/>Edition 2026 ✱</span>
     </div>
+    <h1 class="hero__title" id="heroTitle" aria-label="Allen">Allen</h1>
+    <div class="hero__bottom">
+      <p class="hero__sub">A <b>chemical engineering student</b> who likes modeling reactors and writing code for them. Currently interning at Sud-Chemie India.</p>
+      <div class="hero__scroll">Scroll <i></i></div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee">
+    <div class="marquee__track">
+      <span>Chemical Engineering</span><span>Process Modeling</span><span>Machine Learning</span><span>Quant + Carbon</span><span>Chemical Engineering</span><span>Process Modeling</span><span>Machine Learning</span><span>Quant + Carbon</span>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section class="section" id="about">
+    <div class="section__head">
+      <span class="section__index">(01)</span>
+      <h2 class="section__label">About</h2>
+    </div>
+    <div class="about__grid">
+      <p class="about__lead" data-words>I'm a second-year <b>Chemical Engineering</b> student at NIT Calicut, based in Cochin. I mostly use code to poke at reaction-engineering problems — lately that's been hybrid ML and first-principles reactor models, plus a couple of quant side-projects I'm still figuring out.</p>
+      <div class="about__side">
+        <figure class="about__photo" data-parallax data-cursor="hi">
+          <img src="your-picture.jpg" alt="Allen" />
+        </figure>
+        <div class="about__cap"><span>Fig.01 — Allen</span><span>Cochin, 2026</span></div>
+        <p class="about__name">Allen Binoy</p>
+        <ul class="about__meta">
+          <li><span>Based in</span><span>Cochin, India</span></li>
+          <li><span>Born</span><span>31.08.2005</span></li>
+          <li><span>Studying</span><span>Chem. Eng · NITC</span></li>
+          <li><span>Currently</span><span>Intern · Sud-Chemie</span></li>
+          <li><span>Focus</span><span>Process · ML · Quant</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section class="section" id="education">
+    <div class="section__head">
+      <span class="section__index">(02)</span>
+      <h2 class="section__label">Education</h2>
+    </div>
+    <div class="rows" data-rows>
+      <div class="row" data-reveal>
+        <span class="row__no">01</span>
+        <span class="row__title">B.Tech Chemical Eng.</span>
+        <span class="row__meta">National Institute of Technology Calicut — currently in 2nd year. Reaction engineering, thermodynamics, transport phenomena and process modeling.</span>
+        <span class="row__year">2024 —<br>2028</span>
+        <span class="row__arrow">↗</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="section" id="experience">
+    <div class="section__head">
+      <span class="section__index">(03)</span>
+      <h2 class="section__label">Experience</h2>
+    </div>
+    <div class="rows" data-rows>
+      <div class="row" data-reveal>
+        <span class="row__no">01</span>
+        <span class="row__title">Engineering Intern</span>
+        <span class="row__meta">Sud-Chemie India Pvt. Ltd., Cochin — summer internship at a specialty-chemicals &amp; catalyst manufacturer. May 9 – July 17, 2026.</span>
+        <span class="row__year">May —<br>Jul 2026</span>
+        <span class="row__arrow">↗</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="section" id="skills">
+    <div class="section__head">
+      <span class="section__index">(04)</span>
+      <h2 class="section__label">Skills</h2>
+    </div>
+    <div class="skills__grid" data-skills>
+      <div class="skill"><span class="skill__no">01</span><span class="skill__name">Python</span></div>
+      <div class="skill"><span class="skill__no">02</span><span class="skill__name">PyTorch</span></div>
+      <div class="skill"><span class="skill__no">03</span><span class="skill__name">FastAPI</span></div>
+      <div class="skill"><span class="skill__no">04</span><span class="skill__name">pandas / NumPy</span></div>
+      <div class="skill"><span class="skill__no">05</span><span class="skill__name">SciPy</span></div>
+      <div class="skill"><span class="skill__no">06</span><span class="skill__name">Flask + Plotly</span></div>
+      <div class="skill"><span class="skill__no">07</span><span class="skill__name">Process Modeling</span></div>
+      <div class="skill"><span class="skill__no">08</span><span class="skill__name">Machine Learning</span></div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="section" id="work">
+    <div class="section__head">
+      <span class="section__index">(05)</span>
+      <h2 class="section__label">Selected Work</h2>
+    </div>
+    <div class="rows" data-rows>
+      <a class="row" href="https://github.com/allenjoignatius-sys/cstr-hybrid-neural-network" target="_blank" rel="noopener" data-reveal data-cursor="repo ↗">
+        <span class="row__no">01</span>
+        <span class="row__title">CSTR Hybrid Neural Network<span class="row__tags"><span class="tag tag--wip">● WIP</span><span class="tag">scikit-learn</span><span class="tag">SciPy</span></span></span>
+        <span class="row__meta">A neural-network surrogate for a continuous stirred-tank reactor — trained on first-principles ODE simulations to predict steady-state concentrations orders of magnitude faster, for real-time model-predictive control. Handles irreversible, reversible &amp; parallel kinetics.</span>
+        <span class="row__year">May 6<br>2026</span>
+        <span class="row__arrow">↗</span>
+      </a>
+      <a class="row" href="https://github.com/allenjoignatius-sys/cleantech-quant-api" target="_blank" rel="noopener" data-reveal data-cursor="repo ↗">
+        <span class="row__no">02</span>
+        <span class="row__title">CleanTech Quant API<span class="row__tags"><span class="tag tag--wip">● WIP</span><span class="tag">FastAPI</span><span class="tag">pandas</span></span></span>
+        <span class="row__meta">A FastAPI quant-finance engine for clean-energy &amp; ESG investing — momentum and volatility signals, carbon-penalized portfolio optimization, carbon accounting and backtesting, with an async Postgres + Celery backend.</span>
+        <span class="row__year">May 13<br>2026</span>
+        <span class="row__arrow">↗</span>
+      </a>
+      <div class="row row--soon" data-reveal data-cursor="soon">
+        <span class="row__no">03</span>
+        <span class="row__title">CleanTech Quant Dashboard<span class="row__tags"><span class="tag tag--wip">● WIP</span><span class="tag">Vanilla JS</span><span class="tag">Chart.js</span></span></span>
+        <span class="row__meta">A single-page dashboard for the CleanTech Quant API — market prices, signal tables, the carbon-penalized portfolio, return-vs-carbon trade-off and backtest curves, all rendered live with Chart.js. Repository coming soon.</span>
+        <span class="row__year">May 22<br>2026</span>
+        <span class="row__arrow">◔</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- CONTACT / FOOTER -->
+<footer class="footer" id="contact">
+  <span class="footer__kicker">(06) — Let's build something</span><br/>
+  <a href="https://www.linkedin.com/in/allen-binoy-585776324" target="_blank" rel="noopener" class="footer__mail" data-magnetic>Say&nbsp;Hello ↗</a>
+  <div class="footer__row">
+    <p style="max-width:38ch;font-weight:300;margin:0">Got a project, a research idea, or just want to talk reactors, ML and quant systems? My inbox is open — <a href="mailto:allen.jo.ignatius@gmail.com" class="footer__email">allen.jo.ignatius@gmail.com</a></p>
+    <div class="socials">
+      <a href="https://www.instagram.com/allen_.jo/" target="_blank" rel="noopener" aria-label="Instagram" data-magnetic>
+        <svg viewBox="0 0 24 24"><path d="M16.98 0a6.9 6.9 0 0 1 5.08 1.98A6.94 6.94 0 0 1 24 7.02v9.96c0 2.08-.68 3.87-1.98 5.13A7.14 7.14 0 0 1 16.94 24H7.06a7.06 7.06 0 0 1-5.03-1.89A6.96 6.96 0 0 1 0 16.94V7.02C0 2.8 2.8 0 7.02 0h9.96zm.05 2.23H7.06c-1.45 0-2.7.43-3.53 1.25a4.82 4.82 0 0 0-1.3 3.54v9.92c0 1.5.43 2.7 1.3 3.58a5 5 0 0 0 3.53 1.25h9.88a5 5 0 0 0 3.53-1.25 4.73 4.73 0 0 0 1.4-3.54V7.02a5 5 0 0 0-1.3-3.49 4.82 4.82 0 0 0-3.54-1.3zM12 5.76c3.39 0 6.2 2.8 6.2 6.2a6.2 6.2 0 0 1-12.4 0 6.2 6.2 0 0 1 6.2-6.2zm0 2.22a3.99 3.99 0 0 0-3.97 3.97A3.99 3.99 0 0 0 12 15.92a3.99 3.99 0 0 0 3.97-3.97A3.99 3.99 0 0 0 12 7.98zm5.34-2.54a1.44 1.44 0 1 1 0 2.88 1.44 1.44 0 0 1 0-2.88z"/></svg>
+      </a>
+      <a href="https://www.linkedin.com/in/allen-binoy-585776324" target="_blank" rel="noopener" aria-label="LinkedIn" data-magnetic>
+        <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      <a href="https://github.com/allenjoignatius-sys" target="_blank" rel="noopener" aria-label="GitHub" data-magnetic>
+        <svg viewBox="0 0 24 24"><path d="M12 .5C5.37.5 0 5.78 0 12.29c0 5.2 3.44 9.6 8.21 11.16.6.11.82-.25.82-.58 0-.29-.01-1.04-.02-2.05-3.34.71-4.04-1.58-4.04-1.58-.55-1.37-1.34-1.74-1.34-1.74-1.09-.73.08-.72.08-.72 1.2.08 1.84 1.22 1.84 1.22 1.07 1.8 2.81 1.28 3.5.98.11-.76.42-1.28.76-1.57-2.67-.3-5.47-1.31-5.47-5.84 0-1.29.47-2.35 1.24-3.18-.12-.3-.54-1.51.12-3.15 0 0 1.01-.32 3.3 1.21a11.6 11.6 0 0 1 3-.4c1.02 0 2.05.13 3 .4 2.28-1.53 3.29-1.21 3.29-1.21.66 1.64.24 2.85.12 3.15.77.83 1.24 1.89 1.24 3.18 0 4.54-2.81 5.54-5.49 5.83.43.37.81 1.1.81 2.22 0 1.6-.01 2.89-.01 3.28 0 .32.22.7.83.58A12.01 12.01 0 0 0 24 12.29C24 5.78 18.63.5 12 .5z"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="footer__base">
+    <span>© 2026 Allen Binoy · allenjo.in</span>
+    <span id="clock2">--:--:-- IST</span>
+    <a href="#top" class="totop">Back to top ↑</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var finePointer = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+
+  /* ---------- LOADER ---------- */
+  var loader = document.getElementById('loader');
+  var countEl = document.getElementById('count');
+  var loadbar = document.getElementById('loadbar');
+  function finishLoad(){
+    document.body.classList.add('loaded');
+    if(loader){ loader.classList.add('done'); }
+  }
+  if(reduce){
+    if(countEl) countEl.textContent = '100';
+    setTimeout(finishLoad, 100);
+  } else {
+    var n = 0;
+    var tick = setInterval(function(){
+      n += Math.floor(Math.random()*9)+3;
+      if(n >= 100){ n = 100; clearInterval(tick); setTimeout(finishLoad, 350); }
+      if(countEl) countEl.textContent = String(n).padStart(3,'0');
+      if(loadbar) loadbar.style.width = n + '%';
+    }, 90);
+  }
+
+  /* ---------- HERO PER-LETTER SPLIT ---------- */
+  var heroTitle = document.getElementById('heroTitle');
+  if(heroTitle){
+    var text = heroTitle.textContent.trim();
+    heroTitle.textContent = '';
+    text.split('').forEach(function(ch){
+      var s = document.createElement('span');
+      s.className = 'char';
+      s.textContent = ch;
+      heroTitle.appendChild(s);
+    });
+  }
+
+  /* ---------- ABOUT WORD SPLIT ---------- */
+  var lead = document.querySelector('[data-words]');
+  if(lead && !reduce){
+    lead.classList.add('about__lead');
+    var words = lead.innerHTML.split(/(<b>.*?<\/b>|\s+)/);
+    lead.innerHTML = '';
+    var idx = 0;
+    words.forEach(function(w){
+      if(w.trim()===''){ lead.appendChild(document.createTextNode(' ')); return; }
+      var span = document.createElement('span');
+      span.className = 'word';
+      span.innerHTML = w;
+      span.style.transitionDelay = (idx*0.012) + 's';
+      lead.appendChild(span);
+      idx++;
+    });
+  }
+
+  /* ---------- CUSTOM CURSOR ---------- */
+  if(finePointer && !reduce){
+    var dot = document.getElementById('dot');
+    var ring = document.getElementById('ring');
+    var ringTxt = document.getElementById('ringTxt');
+    var mx=window.innerWidth/2, my=window.innerHeight/2, rx=mx, ry=my;
+    document.addEventListener('mousemove', function(e){ mx=e.clientX; my=e.clientY; dot.style.transform='translate('+mx+'px,'+my+'px) translate(-50%,-50%)'; });
+    (function loop(){
+      rx += (mx-rx)*0.18; ry += (my-ry)*0.18;
+      ring.style.transform='translate('+rx+'px,'+ry+'px) translate(-50%,-50%)';
+      requestAnimationFrame(loop);
+    })();
+    var hoverSel = 'a,button,[data-magnetic],[data-cursor],.row,.skill,.about__photo,.marquee';
+    document.querySelectorAll(hoverSel).forEach(function(el){
+      el.addEventListener('mouseenter', function(){
+        document.body.classList.add('hovering');
+        ringTxt.textContent = el.getAttribute('data-cursor') || '';
+      });
+      el.addEventListener('mouseleave', function(){
+        document.body.classList.remove('hovering');
+        ringTxt.textContent = '';
+      });
+    });
+  }
+
+  /* ---------- MAGNETIC ---------- */
+  if(finePointer && !reduce){
+    document.querySelectorAll('[data-magnetic]').forEach(function(el){
+      el.addEventListener('mousemove', function(e){
+        var r = el.getBoundingClientRect();
+        var x = e.clientX - (r.left + r.width/2);
+        var y = e.clientY - (r.top + r.height/2);
+        el.style.transition = 'transform .15s ease';
+        el.style.transform = 'translate('+(x*0.3)+'px,'+(y*0.3)+'px)';
+      });
+      el.addEventListener('mouseleave', function(){
+        el.style.transition = 'transform .5s cubic-bezier(.16,1,.3,1)';
+        el.style.transform = 'translate(0,0)';
+      });
+    });
+  }
+
+  /* ---------- SCROLL REVEALS ---------- */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){ en.target.classList.add('is-visible'); io.unobserve(en.target); }
+    });
+  }, { threshold:0.15, rootMargin:'0px 0px -8% 0px' });
+  document.querySelectorAll('[data-reveal],[data-words],[data-skills]').forEach(function(el){ io.observe(el); });
+
+  /* ---------- ROW STAGGER ---------- */
+  document.querySelectorAll('[data-rows]').forEach(function(group){
+    var rows = group.querySelectorAll('.row');
+    rows.forEach(function(r,i){ r.style.transitionDelay = (i*0.07)+'s'; });
+  });
+
+  /* ---------- PARALLAX + PROGRESS ---------- */
+  var prog = document.getElementById('progress');
+  var paraEls = Array.prototype.slice.call(document.querySelectorAll('[data-parallax]'));
+  var ticking = false;
+  function onScroll(){
+    if(ticking) return; ticking = true;
+    requestAnimationFrame(function(){
+      var st = window.scrollY || document.documentElement.scrollTop;
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      if(prog) prog.style.width = (h>0 ? (st/h*100) : 0) + '%';
+      if(!reduce){
+        paraEls.forEach(function(el){
+          var r = el.getBoundingClientRect();
+          var off = (r.top + r.height/2 - window.innerHeight/2) * -0.08;
+          el.style.transform = 'translateY('+off.toFixed(1)+'px)';
+        });
+      }
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  /* ---------- CLOCK (IST) ---------- */
+  var clock = document.getElementById('clock');
+  var clock2 = document.getElementById('clock2');
+  function tickClock(){
+    var t = new Date().toLocaleTimeString('en-GB',{ hour12:false, timeZone:'Asia/Kolkata' });
+    if(clock) clock.textContent = t;
+    if(clock2) clock2.textContent = t + ' IST';
+  }
+  tickClock(); setInterval(tickClock, 1000);
+
+  /* ---------- SAFETY: reveal everything if JS-heavy intro stalls ---------- */
+  window.addEventListener('load', function(){ setTimeout(function(){ if(!document.body.classList.contains('loaded')) finishLoad(); }, 4000); });
+})();
+</script>
 </body>
 </html>
