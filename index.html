@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="classic" data-telemetry="subtle">
+<html lang="en" data-theme="classic">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,28 +14,29 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
 <style>
 /* ============================================================
-   TOKENS & HIDDEN EASTER EGG PALETTES
-   Default accent uses Dutch Lion Orange (#FF5500) woven into
-   the archival paper-and-ink aesthetic.
+   TOKENS & THEME PALETTES
+   Base: Archival Paper (#E8E3D7) & Ink (#141210) with
+   Dutch Lion Orange (#FF5500) accents.
 ============================================================ */
-:root,
-[data-theme="classic"]{
+:root{
   --paper:#E8E3D7;
   --paper-2:#DED8C8;
   --ink:#141210;
   --ink-soft:#3E3A35;
-  --accent:#FF5500;        /* Iconic Dutch Lion Orange */
+  --accent:#FF5500;        /* Dutch Lion Orange */
   --accent-orange:#FF5500;
-  --accent-red:#E10600;    /* F1 Soft Compound / Crimson */
-  --accent-yellow:#FCD700; /* Racing Telemetry Yellow */
+  --accent-cyan:#00F0FF;   /* Telemetry Cyan */
+  --accent-red:#E10600;    /* Racing Red */
   --accent-sky:#75AADB;    /* Albiceleste Sky Blue */
-  --accent-gold:#D4AF37;   /* Championship Three-Star Gold */
+  --accent-gold:#D4AF37;   /* Championship Gold */
   --accent-purple:#A855F7; /* Fastest Sector Purple */
-  --accent-green:#10B981;  /* DRS / ERS Active Green */
+  --accent-green:#00D2BE;  /* DRS / Inter Green */
+  --tyre-color:#FF1801;    /* Active Pirelli Compound Color (Default Soft Red) */
+  --marq-speed:26s;
   --line:#141210;
   --footer-bg:#11100E;
   --footer-ink:#E8E3D7;
-  --hud-bg:rgba(20, 18, 16, 0.94);
+  --hud-bg:rgba(20, 18, 16, 0.95);
   --hud-ink:#E8E3D7;
   --hud-border:#FF5500;
   --display:'Anton',Impact,sans-serif;
@@ -45,108 +46,79 @@
   --gutter:clamp(16px,4vw,64px);
 }
 
-/* Easter Egg Theme 1: #33 / #01 Orange Army + RB Carbon Telemetry */
-[data-theme="orange-telemetry"]{
+/* Max Verstappen Theme (body.theme-max): Red Bull Carbon Dark + Dutch Lion Orange + Telemetry Cyan */
+body.theme-max{
   --paper:#0B0E17;
   --paper-2:#121726;
   --ink:#F5F7FA;
   --ink-soft:#9CA3AF;
-  --accent:#FF5500;        /* Lion Orange Primary */
+  --accent:#FF5500;
   --accent-orange:#FF5500;
+  --accent-cyan:#00F0FF;
   --accent-red:#E10600;
-  --accent-yellow:#FCD700;
-  --accent-sky:#38BDF8;
   --accent-gold:#FCD700;
-  --accent-purple:#B84BFF;
   --line:#242C42;
   --footer-bg:#06080E;
   --footer-ink:#F5F7FA;
   --hud-bg:rgba(11, 14, 23, 0.96);
   --hud-ink:#F5F7FA;
   --hud-border:#FF5500;
+  background-image:
+    radial-gradient(circle at 88% 10%, rgba(255, 85, 0, 0.16), transparent 38%),
+    radial-gradient(circle at 12% 85%, rgba(0, 240, 255, 0.09), transparent 42%),
+    linear-gradient(rgba(255, 85, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 85, 0, 0.03) 1px, transparent 1px);
+  background-size:100% 100%, 100% 100%, 48px 48px, 48px 48px;
 }
 
-/* Easter Egg Theme 2: #10 Albiceleste Sky Blue & Gold */
-[data-theme="albiceleste"]{
-  --paper:#F2F8FD;
-  --paper-2:#DFEFFC;
-  --ink:#071324;
-  --ink-soft:#2B4564;
-  --accent:#75AADB;
-  --accent-orange:#FF5500;
-  --accent-sky:#75AADB;
-  --accent-gold:#D4AF37;
-  --line:#071324;
-  --footer-bg:#071324;
-  --footer-ink:#F2F8FD;
-  --hud-bg:rgba(7, 19, 36, 0.95);
-  --hud-ink:#F2F8FD;
-  --hud-border:#D4AF37;
-}
-
-/* Easter Egg Theme 3: Combined #01 x #10 Apex Mode (Lion Orange + Albiceleste + Gold) */
-[data-theme="apex"]{
-  --paper:#0D1322;
-  --paper-2:#162038;
+/* Lionel Messi Theme (body.theme-leo): Albiceleste Night + Sky Blue + Championship Gold */
+body.theme-leo{
+  --paper:#071324;
+  --paper-2:#0D1F3A;
   --ink:#F8FAFC;
-  --ink-soft:#A3B8D7;
-  --accent:#FF5500;
-  --accent-orange:#FF5500;
+  --ink-soft:#94B2D8;
+  --accent:#F5C542;
+  --accent-orange:#F5C542;
   --accent-sky:#75AADB;
-  --accent-gold:#F6B40E;
-  --line:#2B3D5E;
-  --footer-bg:#070B14;
+  --accent-gold:#F5C542;
+  --line:#1E3A5F;
+  --footer-bg:#040B16;
   --footer-ink:#F8FAFC;
-  --hud-bg:rgba(13, 19, 34, 0.96);
+  --hud-bg:rgba(7, 19, 36, 0.96);
   --hud-ink:#F8FAFC;
-  --hud-border:#F6B40E;
+  --hud-border:#F5C542;
+  background-image:
+    radial-gradient(circle at 85% 12%, rgba(245, 197, 66, 0.14), transparent 38%),
+    repeating-linear-gradient(
+      90deg,
+      rgba(117, 170, 219, 0.04) 0px,
+      rgba(117, 170, 219, 0.04) 96px,
+      transparent 96px,
+      transparent 192px
+    );
 }
 
 *{box-sizing:border-box}
 html{ -webkit-font-smoothing:antialiased; scroll-behavior:smooth }
 body{
   margin:0;
-  background:var(--paper);
+  background-color:var(--paper);
   color:var(--ink);
   font-family:var(--sans);
   font-weight:400;
   line-height:1.45;
   overflow-x:hidden;
-  cursor:auto;
+  padding-bottom:76px; /* Space for fixed bottom F1 Telemetry HUD */
   transition:background-color .55s var(--ease), color .55s var(--ease);
-}
-
-/* Subtle telemetry grid / stripe textures in special modes */
-[data-theme="orange-telemetry"] body{
-  background-image:
-    radial-gradient(circle at 88% 10%, rgba(255, 85, 0, 0.14), transparent 38%),
-    radial-gradient(circle at 12% 85%, rgba(225, 6, 0, 0.08), transparent 42%),
-    linear-gradient(rgba(255, 85, 0, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 85, 0, 0.025) 1px, transparent 1px);
-  background-size:100% 100%, 100% 100%, 48px 48px, 48px 48px;
-}
-[data-theme="albiceleste"] body{
-  background-image:repeating-linear-gradient(
-    90deg,
-    transparent,
-    transparent 110px,
-    rgba(117, 170, 219, 0.12) 110px,
-    rgba(117, 170, 219, 0.12) 220px
-  );
-}
-[data-theme="apex"] body{
-  background-image:
-    radial-gradient(circle at 90% 12%, rgba(255, 85, 0, 0.15), transparent 40%),
-    radial-gradient(circle at 10% 85%, rgba(117, 170, 219, 0.15), transparent 42%);
 }
 
 a{ color:inherit; text-decoration:none }
 button{ font:inherit; color:inherit; background:none; border:none; cursor:pointer }
 img{ display:block; max-width:100% }
-::selection{ background:var(--accent-orange); color:#fff }
+::selection{ background:var(--accent-orange); color:#141210 }
 
 /* ============================================================
-   GRAIN + PROGRESS + F1 RPM SHIFT LIGHTS
+   GRAIN + PROGRESS + RB19 OVERDRIVE SWEEP + CONFETTI CANVAS
 ============================================================ */
 .grain{
   position:fixed; inset:0; z-index:9000; pointer-events:none;
@@ -155,55 +127,50 @@ img{ display:block; max-width:100% }
 }
 .progress{
   position:fixed; top:0; left:0; height:4px; width:0%;
-  background:linear-gradient(90deg, var(--accent-orange), #FF8800);
+  background:linear-gradient(90deg, var(--accent-orange), var(--tyre-color));
   z-index:8600;
+  box-shadow:0 0 12px var(--tyre-color);
   transition:background .3s ease, box-shadow .3s ease;
 }
 .progress.sector-purple{
   background:var(--accent-purple) !important;
-  box-shadow:0 0 16px var(--accent-purple);
+  box-shadow:0 0 18px var(--accent-purple) !important;
 }
 
-/* F1 Steering Wheel RPM Shift Lights Strip (Top Center) */
-.rpm-strip{
-  position:fixed; top:4px; left:50%; transform:translateX(-50%);
-  z-index:8550; display:flex; gap:5px; padding:4px 10px;
-  background:rgba(20, 18, 16, 0.78);
-  border:1px solid rgba(255, 85, 0, 0.35);
-  border-top:none; border-radius:0 0 6px 6px;
-  backdrop-filter:blur(6px);
-  pointer-events:none;
-  opacity:0; transition:opacity .35s var(--ease);
+/* RB19 2023 Dominance Overdrive Telemetry Sweep */
+.rb19-sweep{
+  position:fixed; inset:0; z-index:9200; pointer-events:none;
+  background:linear-gradient(110deg, transparent 20%, rgba(255, 85, 0, 0.28) 45%, rgba(0, 240, 255, 0.42) 50%, rgba(168, 85, 247, 0.28) 55%, transparent 80%);
+  transform:translateX(-120%);
 }
-body.scrolling-active .rpm-strip,
-[data-theme="orange-telemetry"] .rpm-strip,
-[data-theme="apex"] .rpm-strip,
-body.hud-open .rpm-strip{
-  opacity:1;
+.rb19-sweep.active{
+  animation:rbSweep 1.35s var(--ease) forwards;
 }
-.rpm-led{
-  width:7px; height:7px; border-radius:50%;
-  background:#2A2A2A; transition:background .12s ease, box-shadow .12s ease;
+@keyframes rbSweep{
+  0%{ transform:translateX(-120%) }
+  100%{ transform:translateX(120%) }
 }
-.rpm-led.on.green{ background:#10B981; box-shadow:0 0 6px #10B981 }
-.rpm-led.on.orange{ background:#FF5500; box-shadow:0 0 7px #FF5500 }
-.rpm-led.on.red{ background:#E10600; box-shadow:0 0 7px #E10600 }
-.rpm-led.on.blue{ background:#38BDF8; box-shadow:0 0 9px #38BDF8 }
+
+/* Lusail Golden Starlight / Confetti Canvas */
+#starCanvas{
+  position:fixed; inset:0; z-index:9100; pointer-events:none;
+}
 
 /* Notification Toast */
 .toast{
-  position:fixed; bottom:74px; right:var(--gutter); z-index:9400;
+  position:fixed; bottom:86px; left:var(--gutter); z-index:9400;
   background:var(--hud-bg); color:var(--hud-ink);
   border-left:4px solid var(--accent-orange);
-  border-top:1px solid rgba(255,255,255,0.14);
-  border-right:1px solid rgba(255,255,255,0.14);
-  border-bottom:1px solid rgba(255,255,255,0.14);
-  padding:11px 16px; font-family:var(--mono); font-size:.71rem;
-  letter-spacing:.08em; text-transform:uppercase;
+  border-top:1px solid rgba(255,255,255,0.16);
+  border-right:1px solid rgba(255,255,255,0.16);
+  border-bottom:1px solid rgba(255,255,255,0.16);
+  padding:12px 18px; font-family:var(--mono); font-size:.72rem;
+  letter-spacing:.06em; text-transform:uppercase;
   transform:translateY(140%); opacity:0;
   transition:transform .4s var(--ease), opacity .4s var(--ease);
   pointer-events:none;
-  box-shadow:0 12px 28px rgba(0,0,0,0.28);
+  max-width:min(540px, 90vw);
+  box-shadow:0 14px 32px rgba(0,0,0,0.38);
 }
 .toast.show{ transform:translateY(0); opacity:1 }
 
@@ -255,78 +222,193 @@ body.hovering .cursor-dot{ opacity:0 }
 }
 
 /* ============================================================
-   NAV + SUBTLE MICRO-TELEMETRY READOUT
+   TOP NAVIGATION + PROMINENT PIRELLI TYRE SELECTOR #1
 ============================================================ */
 .nav{
   position:fixed; top:0; left:0; width:100%; z-index:8000;
   display:flex; align-items:center; justify-content:space-between;
-  padding:18px var(--gutter); mix-blend-mode:difference; color:#E8E3D7;
+  padding:14px var(--gutter);
+  background:rgba(20, 18, 16, 0.86);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(255, 85, 0, 0.28);
+  color:#E8E3D7;
+}
+body.theme-max .nav{
+  background:rgba(11, 14, 23, 0.9);
+  border-bottom-color:rgba(255, 85, 0, 0.5);
+}
+body.theme-leo .nav{
+  background:rgba(7, 19, 36, 0.9);
+  border-bottom-color:rgba(245, 197, 66, 0.5);
+}
+.nav__brand-wrap{
+  display:inline-flex; align-items:center; gap:10px;
 }
 .nav__logo{
-  font-family:var(--display); font-size:1.7rem; letter-spacing:.02em;
-  text-transform:uppercase; display:inline-flex; gap:.25em; align-items:flex-start;
+  font-family:var(--display); font-size:1.65rem; letter-spacing:.02em;
+  text-transform:uppercase; display:inline-flex; gap:.2em; align-items:flex-start;
+  color:#F5F7FA;
 }
 .nav__logo sup{
   font-family:var(--mono); font-size:.48em; top:-.2em; position:relative;
-  color:#FF5500; cursor:pointer; transition:color .25s ease, transform .25s ease;
+  color:var(--accent-orange); cursor:pointer; transition:transform .25s ease;
 }
-.nav__logo sup:hover{ color:#75AADB; transform:scale(1.2) }
+.nav__logo sup:hover{ transform:scale(1.2) }
+
+/* 3 Golden World Cup Stars above logo in Leo Mode */
+.wc-stars-btn{
+  display:inline-flex; gap:3px; padding:3px 8px;
+  border-radius:100px; border:1px solid rgba(245, 197, 66, 0.45);
+  background:rgba(245, 197, 66, 0.12);
+  color:#F5C542; font-size:.75rem; line-height:1;
+  cursor:pointer; transition:transform .25s ease, box-shadow .25s ease;
+}
+.wc-stars-btn:hover{
+  transform:translateY(-2px) scale(1.06);
+  box-shadow:0 0 14px rgba(245, 197, 66, 0.55);
+}
+
 .nav__links{
-  display:flex; gap:clamp(12px,1.8vw,28px); align-items:center;
-  font-family:var(--mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.06em;
+  display:flex; gap:clamp(10px,1.6vw,24px); align-items:center;
+  font-family:var(--mono); font-size:.71rem; text-transform:uppercase; letter-spacing:.06em;
 }
-.nav__links a{ position:relative; padding:4px 0 }
+.nav__links a{ position:relative; padding:4px 0; color:#E8E3D7 }
 .nav__links a::after{
   content:""; position:absolute; left:0; bottom:0; width:0; height:1.5px;
-  background:#FF5500; transition:width .4s var(--ease);
+  background:var(--accent-orange); transition:width .4s var(--ease);
 }
 .nav__links a:hover::after{ width:100% }
 
-/* Micro F1 Telemetry Pill in Nav */
-.nav__telemetry{
+/* PROMINENT PIRELLI TYRE SELECTOR BUTTON (Location #1: Top Nav) */
+.pirelli-selector{
   display:inline-flex; align-items:center; gap:8px;
-  padding:3px 9px; border:1px solid rgba(255, 85, 0, 0.55);
-  border-radius:100px; font-family:var(--mono); font-size:.65rem;
-  letter-spacing:.06em; cursor:pointer; user-select:none;
-  transition:border-color .25s ease, background .25s ease;
+  padding:5px 12px 5px 7px;
+  background:#141210;
+  border:1.5px solid var(--tyre-color);
+  border-radius:100px;
+  font-family:var(--mono); font-size:.68rem; font-weight:700;
+  letter-spacing:.06em; color:#FFFFFF;
+  cursor:pointer; user-select:none;
+  box-shadow:0 0 12px rgba(255, 24, 1, 0.25);
+  transition:transform .2s var(--ease), border-color .25s ease, box-shadow .25s ease, background .25s ease;
 }
-.nav__telemetry:hover{
-  border-color:#FF5500; background:rgba(255, 85, 0, 0.18);
+.pirelli-selector:hover{
+  transform:translateY(-2px);
+  box-shadow:0 0 18px var(--tyre-color);
 }
-.tire-badge{
-  width:15px; height:15px; border-radius:50%;
+.pirelli-wheel{
+  width:24px; height:24px; border-radius:50%;
+  background:radial-gradient(circle at 50% 50%, #2b2b2b 32%, #0d0d0d 34%, #0d0d0d 100%);
+  border:2.5px solid var(--tyre-color);
   display:inline-grid; place-items:center;
-  font-weight:700; font-size:.58rem; line-height:1;
-  border:2px solid #E10600; color:#FFF;
+  font-size:.62rem; font-weight:700; color:var(--tyre-color);
+  position:relative;
+  animation:tyreSpin 6s linear infinite;
 }
-.tire-badge[data-compound="M"]{ border-color:#FCD700 }
-.tire-badge[data-compound="H"]{ border-color:#FFFFFF }
-.tire-badge[data-compound="O"]{ border-color:#FF5500 }
+@keyframes tyreSpin{
+  to{ transform:rotate(360deg) }
+}
+.pirelli-selector__label{
+  display:flex; flex-direction:column; align-items:flex-start; line-height:1.05;
+}
+.pirelli-selector__sub{
+  font-size:.5rem; opacity:.68; font-weight:400; letter-spacing:.1em;
+}
+.pirelli-selector__compound{
+  color:var(--tyre-color); font-weight:700;
+}
 
-.drs-dot{
-  width:6px; height:6px; border-radius:50%;
-  background:#555; transition:background .2s ease, box-shadow .2s ease;
-}
-.drs-dot.active{ background:#10B981; box-shadow:0 0 8px #10B981 }
 .nav__clock{
-  opacity:.78; cursor:pointer; user-select:none;
+  opacity:.82; cursor:pointer; user-select:none;
+  font-family:var(--mono); font-size:.71rem;
   transition:opacity .2s ease, color .2s ease;
 }
-.nav__clock:hover{ opacity:1; color:#FF5500 }
-@media (max-width:860px){
+.nav__clock:hover{ opacity:1; color:var(--accent-orange) }
+@media (max-width:960px){
   .nav__links a{ display:none }
 }
+
+/* ============================================================
+   EASTER EGG ACHIEVEMENT BARS (MAX PIT WALL & LEO TROPHY CABINET)
+============================================================ */
+.milestone-banner{
+  margin-top:64px;
+  border-bottom:1px solid var(--line);
+  font-family:var(--mono);
+  overflow:hidden;
+  display:none;
+}
+body.theme-max .milestone-banner--max{ display:block; background:rgba(18, 23, 38, 0.92); border-bottom:2px solid #FF5500 }
+body.theme-leo .milestone-banner--leo{ display:block; background:rgba(13, 31, 58, 0.92); border-bottom:2px solid #F5C542 }
+
+.milestone-banner__inner{
+  padding:14px var(--gutter);
+  display:flex; align-items:center; justify-content:space-between;
+  gap:16px; flex-wrap:wrap;
+}
+.milestone-group{
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+}
+.milestone-title{
+  font-size:.68rem; font-weight:700; text-transform:uppercase;
+  letter-spacing:.1em; padding:4px 10px; border-radius:4px;
+  background:var(--accent-orange); color:#0B0E17;
+}
+body.theme-leo .milestone-title{
+  background:#F5C542; color:#071324;
+}
+.crown-btn, .bdor-orb, .stat-pill{
+  padding:5px 10px; border-radius:4px;
+  border:1px solid rgba(255,255,255,0.2);
+  background:rgba(255,255,255,0.05);
+  color:var(--ink); font-family:var(--mono); font-size:.66rem;
+  letter-spacing:.05em; text-transform:uppercase;
+  display:inline-flex; align-items:center; gap:6px;
+  cursor:pointer; transition:all .22s var(--ease);
+}
+.crown-btn:hover, .crown-btn.active{
+  background:#FF5500; color:#0B0E17; border-color:#FF5500;
+  font-weight:700; transform:translateY(-2px);
+  box-shadow:0 4px 14px rgba(255, 85, 0, 0.4);
+}
+.stat-pill--rb19{
+  border-color:#00F0FF; color:#00F0FF; font-weight:700;
+}
+.stat-pill--rb19:hover{
+  background:#00F0FF; color:#0B0E17;
+  box-shadow:0 0 16px rgba(0, 240, 255, 0.6);
+}
+.bdor-orb{
+  border-color:rgba(245, 197, 66, 0.45); color:#F5C542;
+}
+.bdor-orb:hover, .bdor-orb.active{
+  background:#F5C542; color:#071324; border-color:#F5C542;
+  font-weight:700; transform:translateY(-2px) scale(1.04);
+  box-shadow:0 0 14px rgba(245, 197, 66, 0.55);
+}
+.stat-pill--leo{
+  border-color:#75AADB; color:#75AADB;
+}
+.stat-pill--leo:hover{
+  background:#75AADB; color:#071324; font-weight:700;
+}
+.milestone-readout{
+  width:100%; padding-top:8px; border-top:1px dashed rgba(255,255,255,0.15);
+  font-size:.7rem; color:var(--accent-cyan); letter-spacing:.05em;
+  display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;
+}
+body.theme-leo .milestone-readout{ color:#F5C542 }
 
 /* ============================================================
    LAYOUT HELPERS + SECTOR DELTA BADGES
 ============================================================ */
 .section{
-  padding:clamp(70px,12vh,155px) var(--gutter);
+  padding:clamp(70px,12vh,150px) var(--gutter);
   border-top:1px solid var(--line); position:relative;
 }
 .section__head{
   display:flex; align-items:baseline; justify-content:space-between;
-  gap:18px; margin-bottom:clamp(32px,6vh,80px); flex-wrap:wrap;
+  gap:18px; margin-bottom:clamp(32px,6vh,76px); flex-wrap:wrap;
 }
 .section__head-left{
   display:flex; align-items:baseline; gap:18px; flex-wrap:wrap;
@@ -346,7 +428,7 @@ body.hovering .cursor-dot{ opacity:0 }
 }
 .sector-tag{
   font-family:var(--mono); font-size:.68rem; text-transform:uppercase;
-  letter-spacing:.08em; opacity:.65; display:inline-flex; align-items:center; gap:8px;
+  letter-spacing:.08em; opacity:.75; display:inline-flex; align-items:center; gap:8px;
   cursor:pointer; user-select:none; transition:opacity .25s ease, color .25s ease;
 }
 .sector-tag:hover{ opacity:1; color:var(--accent-purple) }
@@ -357,23 +439,36 @@ body.hovering .cursor-dot{ opacity:0 }
 .sector-tag.purple i{ background:var(--accent-purple); box-shadow:0 0 8px var(--accent-purple) }
 
 /* ============================================================
-   HERO + ARGENTINA JERSEY HOVER ON "ALLEN" + ORANGE ACCENTS
+   HERO + ARGENTINA JERSEY HOVER ON "ALLEN"
 ============================================================ */
 .hero{
-  min-height:100svh; display:flex; flex-direction:column;
-  justify-content:space-between; padding:clamp(90px,14vh,150px) var(--gutter) 28px;
+  min-height:94svh; display:flex; flex-direction:column;
+  justify-content:space-between; padding:clamp(96px,14vh,150px) var(--gutter) 28px;
   position:relative;
 }
 .hero__top{
-  display:flex; justify-content:space-between;
+  display:flex; justify-content:space-between; align-items:flex-start;
   font-family:var(--mono); font-size:.74rem; text-transform:uppercase;
-  letter-spacing:.06em; flex-wrap:wrap; gap:10px;
+  letter-spacing:.06em; flex-wrap:wrap; gap:14px;
 }
-.hero__top span{ max-width:40ch }
-.hero__edition{
-  cursor:pointer; user-select:none;
+.hero__top span{ max-width:42ch }
+.hero__quick-themes{
+  display:flex; gap:8px; align-items:center; flex-wrap:wrap;
 }
-.hero__edition b{ color:var(--accent-orange) }
+.theme-chip{
+  font-family:var(--mono); font-size:.65rem; text-transform:uppercase;
+  letter-spacing:.06em; padding:5px 10px; border:1px solid var(--line);
+  border-radius:100px; cursor:pointer; transition:all .25s var(--ease);
+}
+.theme-chip:hover{
+  border-color:var(--accent-orange); color:var(--accent-orange); transform:translateY(-1px);
+}
+body.theme-max .theme-chip[data-trigger-theme="max"]{
+  background:#FF5500; color:#0B0E17; border-color:#FF5500; font-weight:700;
+}
+body.theme-leo .theme-chip[data-trigger-theme="leo"]{
+  background:#F5C542; color:#071324; border-color:#F5C542; font-weight:700;
+}
 
 .hero__title{
   font-family:var(--display); text-transform:uppercase; margin:auto 0;
@@ -392,25 +487,29 @@ body.hovering .cursor-dot{ opacity:0 }
 .hero__title .char:nth-child(5){ transition-delay:.29s }
 body.loaded .hero__title .char{ transform:translateY(0) }
 
-/* EASTER EGG: Hovering over "ALLEN" turns the letters into the
-   Argentina Albiceleste jersey stripes (Sky Blue & Crisp White + Sun Gold shadow) */
+/* Hovering over "ALLEN" transitions characters into vertical white & sky-blue
+   Argentina Albiceleste stripes (#75AADB & #FFFFFF) with Championship Gold (#D4AF37) shadow */
 body.loaded .hero__title:hover .char{
   transition-delay:0s;
-  -webkit-text-stroke:2px var(--ink);
-}
-[data-theme="orange-telemetry"] body.loaded .hero__title:hover .char,
-[data-theme="apex"] body.loaded .hero__title:hover .char{
-  -webkit-text-stroke:2px #75AADB;
-}
-body.loaded .hero__title:hover .char:nth-child(odd){
-  color:#75AADB; /* Argentina Albiceleste Sky Blue */
+  -webkit-text-stroke:2px #141210;
+  background:repeating-linear-gradient(
+    90deg,
+    #75AADB 0%,
+    #75AADB 33.3%,
+    #FFFFFF 33.3%,
+    #FFFFFF 66.6%,
+    #75AADB 66.6%,
+    #75AADB 100%
+  );
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
   transform:translateY(-4%) skewX(-5deg);
-  filter:drop-shadow(0 8px 0 rgba(212, 175, 55, 0.45));
+  filter:drop-shadow(0 8px 0 #D4AF37);
 }
-body.loaded .hero__title:hover .char:nth-child(even){
-  color:#FFFFFF; /* Argentina Crisp White Stripe */
-  transform:translateY(-4%) skewX(-5deg);
-  filter:drop-shadow(0 8px 0 rgba(117, 170, 219, 0.5));
+body.theme-max.loaded .hero__title:hover .char,
+body.theme-leo.loaded .hero__title:hover .char{
+  -webkit-text-stroke:2px #F5C542;
 }
 body.loaded .hero__title .char:hover{
   transform:translateY(-8%) skewX(-8deg) !important;
@@ -421,11 +520,10 @@ body.loaded .hero__title .char:hover{
   gap:20px; flex-wrap:wrap;
 }
 .hero__sub{
-  max-width:46ch; font-size:clamp(1rem,1.45vw,1.25rem);
+  max-width:48ch; font-size:clamp(1rem,1.45vw,1.25rem);
   font-weight:300; margin:0; line-height:1.5;
 }
-.hero__sub b{ font-weight:600; color:var(--accent-orange) }
-[data-theme="classic"] .hero__sub b{ color:var(--ink); border-bottom:2px solid var(--accent-orange) }
+.hero__sub b{ font-weight:600; border-bottom:2px solid var(--accent-orange) }
 .hero__scroll{
   font-family:var(--mono); font-size:.72rem; text-transform:uppercase;
   letter-spacing:.1em; display:flex; align-items:center; gap:10px;
@@ -441,18 +539,17 @@ body.loaded .hero__title .char:hover{
 @keyframes slide{ 0%{transform:translateX(-100%)} 60%,100%{transform:translateX(100%)} }
 
 /* ============================================================
-   MARQUEE (WITH DUTCH LION ORANGE & ALBICELESTE ACCENTS)
+   MARQUEE (SPEED MODULATED BY PIRELLI TYRE COMPOUND)
 ============================================================ */
 .marquee{
   overflow:hidden; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
   background:var(--ink); color:var(--paper);
 }
-[data-theme="orange-telemetry"] .marquee{
-  background:#FF5500; color:#0B0E17; border-color:#FF5500;
-}
+body.theme-max .marquee{ background:#FF5500; color:#0B0E17; border-color:#FF5500 }
+body.theme-leo .marquee{ background:#75AADB; color:#071324; border-color:#F5C542 }
 .marquee__track{
   display:inline-flex; white-space:nowrap; will-change:transform;
-  animation:marq 26s linear infinite;
+  animation:marq var(--marq-speed) linear infinite;
 }
 .marquee:hover .marquee__track{ animation-play-state:paused }
 .marquee__track span{
@@ -461,9 +558,8 @@ body.loaded .hero__title .char:hover{
   display:inline-flex; align-items:center; gap:28px;
 }
 .marquee__track span::after{ content:"✱"; color:var(--accent-orange); font-size:.7em }
-[data-theme="orange-telemetry"] .marquee__track span::after{ color:#0B0E17 }
-.marquee__track span:nth-child(even)::after{ color:var(--accent-sky) }
-[data-theme="orange-telemetry"] .marquee__track span:nth-child(even)::after{ color:#FFFFFF }
+body.theme-max .marquee__track span::after{ color:#0B0E17 }
+body.theme-leo .marquee__track span::after{ color:#F5C542 }
 @keyframes marq{ to{ transform:translateX(-50%) } }
 
 /* ============================================================
@@ -488,7 +584,7 @@ body.loaded .hero__title .char:hover{
   line-height:1.65; color:var(--ink-soft); max-width:58ch;
   margin:0; border-left:3px solid var(--accent-orange); padding-left:18px;
 }
-.about__side{ position:sticky; top:110px }
+.about__side{ position:sticky; top:96px }
 .about__photo{
   margin:0; overflow:hidden; border:1px solid var(--line);
   position:relative; background:var(--paper-2);
@@ -535,16 +631,18 @@ body.loaded .hero__title .char:hover{
 }
 
 /* ============================================================
-   ROWS (Education / Experience / Selected Work)
+   ROWS (Education / Experience / Selected Work + Expandable Specs)
 ============================================================ */
 .rows{ border-bottom:1px solid var(--line) }
+.work-item{ border-top:1px solid var(--line) }
 .row{
   position:relative; display:grid;
-  grid-template-columns:64px 1.45fr 1.2fr 110px;
-  gap:18px; align-items:center; padding:clamp(22px,3vw,42px) 10px;
+  grid-template-columns:64px 1.45fr 1.2fr 120px;
+  gap:18px; align-items:center; padding:clamp(22px,3vw,40px) 10px;
   border-top:1px solid var(--line); overflow:hidden;
   transition:color .4s var(--ease), border-color .4s var(--ease); color:var(--ink);
 }
+.work-item .row{ border-top:none }
 .row::before{
   content:""; position:absolute; inset:0; background:var(--ink);
   transform:translateY(101%); transition:transform .5s var(--ease); z-index:-1;
@@ -560,10 +658,10 @@ body.loaded .hero__title .char:hover{
 .row__no{ font-family:var(--mono); font-size:.82rem; font-weight:700; color:var(--accent-orange) }
 .row__title{
   font-family:var(--display); text-transform:uppercase;
-  font-size:clamp(1.5rem,3.8vw,3.1rem); line-height:.92;
+  font-size:clamp(1.5rem,3.6vw,3rem); line-height:.92;
   display:flex; flex-direction:column; gap:12px;
 }
-.row__tags{ display:flex; gap:7px; flex-wrap:wrap }
+.row__tags{ display:flex; gap:7px; flex-wrap:wrap; align-items:center }
 .tag{
   font-family:var(--mono); font-weight:400; text-transform:uppercase;
   font-size:.6rem; letter-spacing:.08em; border:1px solid currentColor;
@@ -573,6 +671,34 @@ body.loaded .hero__title .char:hover{
 .row:hover .tag{
   border-color:var(--accent-orange); color:var(--accent-orange);
 }
+.spec-toggle-btn{
+  font-family:var(--mono); font-size:.58rem; text-transform:uppercase;
+  letter-spacing:.08em; padding:4px 10px; border-radius:4px;
+  border:1px dashed var(--accent-orange); color:var(--accent-orange);
+  background:transparent; cursor:pointer;
+  transition:background .25s ease, color .25s ease;
+}
+.spec-toggle-btn:hover{
+  background:var(--accent-orange) !important; color:#141210 !important; font-weight:700;
+}
+.spec-drawer{
+  max-height:0; overflow:hidden;
+  transition:max-height .45s var(--ease), padding .35s var(--ease);
+  background:var(--paper-2); padding:0 18px 0 82px;
+  font-family:var(--mono); font-size:.76rem; color:var(--ink-soft);
+}
+.spec-drawer.open{
+  max-height:280px; padding:16px 18px 20px 82px;
+  border-top:1px dashed var(--line);
+}
+.spec-drawer__grid{
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px;
+}
+.spec-drawer__grid strong{
+  display:block; color:var(--accent-orange); font-size:.65rem;
+  text-transform:uppercase; letter-spacing:.08em; margin-bottom:3px;
+}
+
 .row__meta{ font-size:.95rem; font-weight:300; max-width:48ch; line-height:1.58 }
 .row__year{ font-family:var(--mono); font-size:.78rem; text-align:right; line-height:1.35 }
 .row__arrow{
@@ -585,18 +711,19 @@ body.loaded .hero__title .char:hover{
   .row{ grid-template-columns:40px 1fr; gap:8px 12px }
   .row__meta{ grid-column:2 }
   .row__year{ grid-column:2; text-align:left }
+  .spec-drawer, .spec-drawer.open{ padding-left:18px }
 }
 
 /* ============================================================
-   SKILLS
+   SKILLS GRID (8 CORE COMPETENCIES)
 ============================================================ */
 .skills__grid{
-  display:grid; grid-template-columns:repeat(auto-fill,minmax(185px,1fr));
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
   border-left:1px solid var(--line); border-top:1px solid var(--line);
 }
 .skill{
   border-right:1px solid var(--line); border-bottom:1px solid var(--line);
-  padding:22px 18px; min-height:140px;
+  padding:24px 20px; min-height:145px;
   display:flex; flex-direction:column; justify-content:space-between;
   opacity:0; transform:translateY(24px);
   transition:opacity .5s var(--ease),transform .5s var(--ease),background .3s ease,color .3s ease;
@@ -614,113 +741,152 @@ body.loaded .hero__title .char:hover{
 .skill:hover::after{ transform:scaleX(1) }
 
 /* ============================================================
-   LIVE F1 TELEMETRY COCKPIT HUD (SUBTLE STRIP OR FULL OVERLAY)
+   FLOATING THEME AUDIO PLAYER PILL (BOTTOM RIGHT ABOVE HUD)
 ============================================================ */
-.telemetry-dock{
-  position:fixed; bottom:16px; left:var(--gutter); right:var(--gutter);
-  z-index:8800; display:flex; justify-content:space-between; align-items:flex-end;
-  pointer-events:none; gap:12px; flex-wrap:wrap;
-}
-
-/* Expanded F1 Telemetry Module (Visible in Orange Telemetry / Apex Mode or when toggled) */
-.f1-hud{
-  pointer-events:auto;
+.audio-pill{
+  position:fixed; bottom:68px; right:var(--gutter); z-index:8900;
   background:var(--hud-bg); color:var(--hud-ink);
-  border:1px solid var(--hud-border);
-  border-left:4px solid var(--accent-orange);
-  padding:12px 16px; border-radius:6px;
+  border:1.5px solid var(--accent-orange);
+  border-radius:100px; padding:7px 14px;
+  display:inline-flex; align-items:center; gap:10px;
   font-family:var(--mono); font-size:.66rem; text-transform:uppercase;
-  letter-spacing:.06em;
-  display:grid; grid-template-columns:repeat(4, auto); gap:14px 20px;
-  align-items:center;
-  box-shadow:0 16px 40px rgba(0,0,0,0.45);
+  letter-spacing:.06em; box-shadow:0 12px 30px rgba(0,0,0,0.45);
   backdrop-filter:blur(10px);
-  transform:translateY(130%); opacity:0;
-  transition:transform .45s var(--ease), opacity .45s var(--ease);
+  transform:translateY(140%); opacity:0; pointer-events:none;
+  transition:transform .4s var(--ease), opacity .4s var(--ease), border-color .3s ease;
 }
-[data-theme="orange-telemetry"] .f1-hud,
-[data-theme="apex"] .f1-hud,
-body.hud-open .f1-hud{
-  transform:translateY(0); opacity:1;
+.audio-pill.visible{
+  transform:translateY(0); opacity:1; pointer-events:auto;
 }
-.f1-hud__cell{
-  display:flex; flex-direction:column; gap:4px;
+.eq-bars{
+  display:inline-flex; align-items:flex-end; gap:2px; height:12px;
 }
-.f1-hud__label{
-  font-size:.56rem; opacity:.65; display:flex; justify-content:space-between; gap:8px;
+.eq-bars span{
+  width:2.5px; height:4px; background:var(--accent-orange);
+  animation:eqBounce .55s ease-in-out infinite alternate;
 }
-.f1-hud__val{
-  font-size:.95rem; font-weight:700; color:var(--accent-orange);
-  display:flex; align-items:baseline; gap:6px;
+.eq-bars span:nth-child(2){ animation-delay:.15s; height:9px }
+.eq-bars span:nth-child(3){ animation-delay:.3s; height:6px }
+.eq-bars span:nth-child(4){ animation-delay:.1s; height:11px }
+.audio-pill.muted .eq-bars span{
+  animation:none; height:3px; opacity:.4;
 }
-.f1-hud__val small{ font-size:.6rem; color:var(--hud-ink); opacity:.8 }
-.f1-bar{
-  width:92px; height:6px; background:rgba(255,255,255,0.12);
-  border-radius:2px; overflow:hidden; position:relative;
+@keyframes eqBounce{
+  0%{ height:3px }
+  100%{ height:12px }
 }
-.f1-bar__fill{
-  height:100%; width:0%; transition:width .1s linear;
+.audio-pill__btn{
+  padding:3px 8px; border-radius:100px;
+  border:1px solid rgba(255,255,255,0.22);
+  font-size:.6rem; color:var(--hud-ink);
+  transition:background .2s ease, color .2s ease;
 }
-.f1-bar__fill--thr{ background:linear-gradient(90deg, #10B981, #FF5500) }
-.f1-bar__fill--ers{ background:linear-gradient(90deg, #FCD700, #38BDF8) }
-.f1-sectors{
-  display:flex; gap:5px;
-}
-.f1-sec-pill{
-  padding:2px 6px; border-radius:2px; font-size:.58rem; font-weight:700;
-  background:rgba(255,255,255,0.1); color:var(--hud-ink);
-}
-.f1-sec-pill.purple{ background:var(--accent-purple); color:#fff }
-.f1-sec-pill.green{ background:var(--accent-green); color:#052e16 }
-.f1-sec-pill.orange{ background:var(--accent-orange); color:#141210 }
-
-/* Discreet Mode & Telemetry Controller Pill (Bottom Right) */
-.mode-pill{
-  pointer-events:auto;
-  margin-left:auto;
-  background:var(--hud-bg); color:var(--hud-ink);
-  border:1px solid rgba(255, 85, 0, 0.5);
-  border-radius:100px; padding:4px 6px;
-  display:inline-flex; align-items:center; gap:3px;
-  font-family:var(--mono); font-size:.62rem; text-transform:uppercase;
-  letter-spacing:.06em; box-shadow:0 8px 24px rgba(0,0,0,0.28);
-  backdrop-filter:blur(8px);
-}
-.mode-btn{
-  padding:5px 9px; border-radius:100px; color:var(--hud-ink);
-  opacity:.68; transition:opacity .2s ease, background .25s ease, color .25s ease;
-  font-weight:700;
-}
-.mode-btn:hover{ opacity:1 }
-.mode-btn.active{
-  opacity:1; background:var(--accent-orange); color:#141210;
-}
-.mode-btn[data-set-theme="albiceleste"].active{
-  background:var(--accent-sky); color:#071324;
-}
-.mode-btn[data-set-theme="apex"].active{
-  background:linear-gradient(90deg, #FF5500, #75AADB); color:#071324;
-}
-.mode-btn--hud{
-  border-left:1px solid rgba(255,255,255,0.2);
-  border-radius:0 100px 100px 0; padding-left:10px;
-  color:var(--accent-orange); opacity:.9;
-}
-body.hud-open .mode-btn--hud,
-[data-theme="orange-telemetry"] .mode-btn--hud,
-[data-theme="apex"] .mode-btn--hud{
-  color:#10B981;
-}
-@media (max-width:760px){
-  .f1-hud{ grid-template-columns:repeat(2, 1fr); width:100% }
+.audio-pill__btn:hover{
+  background:var(--accent-orange); color:#141210; border-color:var(--accent-orange); font-weight:700;
 }
 
 /* ============================================================
-   CONTACT / FOOTER
+   FIXED BOTTOM F1 TELEMETRY HUD BAR + PIRELLI SELECTOR #2
+============================================================ */
+.f1-hud-bar{
+  position:fixed; bottom:0; left:0; right:0; z-index:8800;
+  background:var(--hud-bg); color:var(--hud-ink);
+  border-top:2px solid var(--hud-border);
+  padding:8px var(--gutter);
+  font-family:var(--mono); font-size:.66rem; text-transform:uppercase;
+  letter-spacing:.05em;
+  display:flex; align-items:center; justify-content:space-between;
+  gap:14px; flex-wrap:wrap;
+  backdrop-filter:blur(12px);
+  box-shadow:0 -10px 30px rgba(0,0,0,0.35);
+}
+
+/* PROMINENT PIRELLI TYRE SELECTOR #2 (Inside Bottom F1 HUD) */
+.hud-tyre-btn{
+  display:inline-flex; align-items:center; gap:9px;
+  padding:5px 12px 5px 8px;
+  background:rgba(255,255,255,0.06);
+  border:1.5px solid var(--tyre-color);
+  border-radius:100px;
+  color:#FFF; cursor:pointer; user-select:none;
+  transition:transform .2s ease, box-shadow .25s ease;
+}
+.hud-tyre-btn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 0 14px var(--tyre-color);
+}
+.hud-tyre-ring{
+  width:22px; height:22px; border-radius:50%;
+  border:3px solid var(--tyre-color);
+  display:inline-grid; place-items:center;
+  font-weight:700; font-size:.64rem; color:var(--tyre-color);
+  background:#111;
+}
+
+.hud-metrics{
+  display:flex; align-items:center; gap:clamp(12px, 2.2vw, 28px); flex-wrap:wrap;
+}
+.hud-cell{
+  display:flex; align-items:center; gap:8px;
+}
+.hud-cell__lbl{ opacity:.62; font-size:.58rem }
+.hud-cell__val{
+  font-weight:700; font-size:.82rem; color:var(--accent-orange);
+}
+.hud-rpm-leds{
+  display:inline-flex; gap:3px; align-items:center;
+}
+.hud-led{
+  width:6px; height:9px; border-radius:1px; background:#2A2A2A;
+  transition:background .1s ease, box-shadow .1s ease;
+}
+.hud-led.on.green{ background:#00D2BE; box-shadow:0 0 6px #00D2BE }
+.hud-led.on.orange{ background:#FF5500; box-shadow:0 0 6px #FF5500 }
+.hud-led.on.red{ background:#E10600; box-shadow:0 0 6px #E10600 }
+.hud-led.on.purple{ background:#A855F7; box-shadow:0 0 8px #A855F7 }
+
+.hud-pedals{
+  display:flex; flex-direction:column; gap:3px; width:74px;
+}
+.hud-pedal-track{
+  width:100%; height:4px; background:rgba(255,255,255,0.14); border-radius:2px; overflow:hidden;
+}
+.hud-pedal-fill--thr{ height:100%; width:0%; background:#00D2BE; transition:width .1s linear }
+.hud-pedal-fill--brk{ height:100%; width:0%; background:#E10600; transition:width .1s linear }
+
+.hud-drs-badge{
+  padding:3px 8px; border-radius:3px; font-size:.6rem; font-weight:700;
+  border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.55);
+}
+.hud-drs-badge.available{
+  border-color:#FCD700; color:#FCD700;
+}
+.hud-drs-badge.active{
+  background:#00D2BE; border-color:#00D2BE; color:#061214;
+  box-shadow:0 0 12px rgba(0, 210, 190, 0.55);
+}
+
+.hud-sectors{
+  display:inline-flex; gap:4px;
+}
+.hud-sec{
+  padding:2px 6px; border-radius:2px; font-size:.58rem; font-weight:700;
+  background:rgba(255,255,255,0.08); cursor:pointer;
+}
+.hud-sec.purple{ background:#A855F7; color:#FFF }
+.hud-sec.green{ background:#00D2BE; color:#041E1C }
+.hud-sec.orange{ background:#FF5500; color:#141210 }
+
+@media (max-width:860px){
+  .hud-sectors, .hud-pedals{ display:none }
+}
+
+/* ============================================================
+   CONTACT / FOOTER + SECRET EASTER EGG TRIGGERS
 ============================================================ */
 .footer{
   background:var(--footer-bg); color:var(--footer-ink);
-  padding:clamp(60px,12vh,150px) var(--gutter) 88px;
+  padding:clamp(60px,12vh,140px) var(--gutter) 44px;
   border-top:2px solid var(--accent-orange);
   transition:background-color .55s var(--ease), color .55s var(--ease);
 }
@@ -775,7 +941,20 @@ body.hud-open .mode-btn--hud,
   display:flex; justify-content:space-between; align-items:center;
   flex-wrap:wrap; gap:12px; margin-top:48px; padding-top:18px;
   border-top:1px solid #ffffff2a; font-family:var(--mono);
-  font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; opacity:.82;
+  font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; opacity:.88;
+}
+.secret-triggers{
+  display:inline-flex; align-items:center; gap:8px; flex-wrap:wrap;
+}
+.secret-btn{
+  font-family:var(--mono); font-size:.66rem; padding:3px 8px;
+  border:1px solid rgba(255,255,255,0.2); border-radius:3px;
+  color:var(--footer-ink); opacity:.72; cursor:pointer;
+  transition:all .2s ease;
+}
+.secret-btn:hover, .secret-btn.active{
+  opacity:1; border-color:var(--accent-orange); color:var(--accent-orange);
+  background:rgba(255, 85, 0, 0.12);
 }
 .totop{
   font-family:var(--mono); font-size:.72rem; text-transform:uppercase;
@@ -784,14 +963,11 @@ body.hud-open .mode-btn--hud,
 }
 
 /* ============================================================
-   REVEAL UTILITY
+   REVEAL UTILITY & REDUCED MOTION
 ============================================================ */
 [data-reveal]{ opacity:0; transform:translateY(34px); transition:opacity .8s var(--ease),transform .8s var(--ease) }
 [data-reveal].is-visible{ opacity:1; transform:none }
 
-/* ============================================================
-   REDUCED MOTION
-============================================================ */
 @media (prefers-reduced-motion:reduce){
   *{ animation:none !important; transition-duration:.001s !important }
   .hero__title .char{ transform:none }
@@ -804,22 +980,13 @@ body.hud-open .mode-btn--hud,
 
 <div class="grain" aria-hidden="true"></div>
 <div class="progress" id="progress" aria-hidden="true"></div>
+<div class="rb19-sweep" id="rb19Sweep" aria-hidden="true"></div>
+<canvas id="starCanvas" aria-hidden="true"></canvas>
 
-<!-- F1 Steering Wheel RPM Shift Lights Bar -->
-<div class="rpm-strip" id="rpmStrip" aria-hidden="true">
-  <span class="rpm-led" data-rpm="1"></span>
-  <span class="rpm-led" data-rpm="2"></span>
-  <span class="rpm-led" data-rpm="3"></span>
-  <span class="rpm-led" data-rpm="4"></span>
-  <span class="rpm-led" data-rpm="5"></span>
-  <span class="rpm-led" data-rpm="6"></span>
-  <span class="rpm-led" data-rpm="7"></span>
-  <span class="rpm-led" data-rpm="8"></span>
-  <span class="rpm-led" data-rpm="9"></span>
-  <span class="rpm-led" data-rpm="10"></span>
-  <span class="rpm-led" data-rpm="11"></span>
-  <span class="rpm-led" data-rpm="12"></span>
-</div>
+<!-- THEME AUDIO ELEMENTS (MP3 Ready + Automatic Web Audio Synth Fallback) -->
+<audio id="maxAudio" src="tututudu-max-verstappen.mp3" loop preload="auto"></audio>
+<audio id="leoAudio" src="muchachos-messi.mp3" loop preload="auto"></audio>
+<input type="file" id="customAudioInput" accept="audio/*" style="display:none" />
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <div class="cursor-ring" id="ring" aria-hidden="true"><span id="ringTxt"></span></div>
@@ -832,9 +999,12 @@ body.hud-open .mode-btn--hud,
   <div class="loader__bar" id="loadbar"></div>
 </div>
 
-<!-- NAV -->
+<!-- TOP NAVIGATION BAR (Includes Prominent Pirelli Tyre Compound Selector #1) -->
 <header class="nav">
-  <a href="#top" class="nav__logo" data-magnetic>Allen<sup id="logoStar" title="Click to switch theme">©</sup></a>
+  <div class="nav__brand-wrap">
+    <a href="#top" class="nav__logo" data-magnetic>Allen<sup id="logoStar" title="Click to cycle Max / Leo / Archival themes">©</sup></a>
+    <button type="button" class="wc-stars-btn" id="wcStarsBtn" title="Lusail 18.12.2022 · 1× World Cup & 3 WC Finals">★★★</button>
+  </div>
   <nav class="nav__links">
     <a href="#about">About</a>
     <a href="#education">Education</a>
@@ -842,16 +1012,67 @@ body.hud-open .mode-btn--hud,
     <a href="#work">Selected Work</a>
     <a href="#skills">Skills</a>
     <a href="#contact">Contact</a>
-    <!-- Micro F1 Telemetry Readout in Nav -->
-    <div class="nav__telemetry" id="navTelemetry" title="Click to cycle tire compound · Double-click for Full Telemetry HUD">
-      <span class="tire-badge" id="tireBadge" data-compound="O">O</span>
-      <span id="navGear">G1</span>
-      <span id="navSpeed">000 KM/H</span>
-      <span class="drs-dot" id="drsDot" title="DRS"></span>
-    </div>
-    <span class="nav__clock" id="clock" title="Double-click for Orange Telemetry Mode">--:--:--</span>
+
+    <!-- PROMINENT PIRELLI TYRE SELECTOR #1 (Top Nav) -->
+    <button type="button" class="pirelli-selector" id="navPirelliBtn" title="Click to cycle Pirelli Tyre Compound (Soft / Medium / Hard / Inter)">
+      <span class="pirelli-wheel" id="navTyreWheel">(S)</span>
+      <span class="pirelli-selector__label">
+        <span class="pirelli-selector__sub">PIRELLI P-ZERO</span>
+        <span class="pirelli-selector__compound" id="navTyreName">SOFT · C5</span>
+      </span>
+    </button>
+
+    <span class="nav__clock" id="clock" title="Double-click for Max #1 Mode">--:--:--</span>
   </nav>
 </header>
+
+<!-- MAX VERSTAPPEN PIT WALL ACHIEVEMENT & TELEMETRY EASTER EGG BAR -->
+<aside class="milestone-banner milestone-banner--max" aria-label="Max Verstappen Championship Telemetry">
+  <div class="milestone-banner__inner">
+    <div class="milestone-group">
+      <span class="milestone-title">🦁 #1 PIT WALL TELEMETRY</span>
+      <button type="button" class="crown-btn active" data-wdc="2021">👑 '21 WDC</button>
+      <button type="button" class="crown-btn" data-wdc="2022">👑 '22 WDC</button>
+      <button type="button" class="crown-btn" data-wdc="2023">👑 '23 WDC</button>
+      <button type="button" class="crown-btn" data-wdc="2024">👑 '24 WDC</button>
+    </div>
+    <div class="milestone-group">
+      <button type="button" class="stat-pill stat-pill--rb19" id="rb19DominanceBtn" title="Click to trigger 2023 RB19 Dominance Overdrive Sweep">
+        ⚡ 2023 RB19 RECORD: 19/22 WINS (86.36%) · 1,003/1,066 LAPS LED · 575 PTS · 10 STRAIGHT WINS
+      </button>
+    </div>
+    <div class="milestone-readout" id="maxReadout">
+      <span>TELEMETRY NOTE: ABU DHABI GP 12.12.2021 · LAP 58/58 OVERTAKE ON SOFT C5 TYRES · MAIDEN WORLD CHAMPIONSHIP</span>
+      <span>SONG: ♪ TU-TU-TU-DU MAX VERSTAPPEN [ON REPEAT]</span>
+    </div>
+  </div>
+</aside>
+
+<!-- LIONEL MESSI LA SCALONETA & GOAT TROPHY CABINET EASTER EGG BAR -->
+<aside class="milestone-banner milestone-banner--leo" aria-label="Lionel Messi Trophy Cabinet">
+  <div class="milestone-banner__inner">
+    <div class="milestone-group">
+      <span class="milestone-title">★★★ LA SCALONETA #10</span>
+      <button type="button" class="stat-pill stat-pill--leo" id="lusailFinalBtn">🏆 1× WORLD CUP (LUSAIL 18.12.2022)</button>
+      <button type="button" class="stat-pill stat-pill--leo" id="wcFinalsBtn">🌍 3 WC FINALS ('14 · '22) &amp; 2× GOLDEN BALL</button>
+      <button type="button" class="stat-pill stat-pill--leo" id="record91Btn">⚽ 91 GOALS IN 2012 · 6× GOLDEN SHOE</button>
+    </div>
+    <div class="milestone-group" aria-label="8 Ballon d'Or Orbs">
+      <button type="button" class="bdor-orb active" data-bdor="2009">⬡ '09</button>
+      <button type="button" class="bdor-orb" data-bdor="2010">⬡ '10</button>
+      <button type="button" class="bdor-orb" data-bdor="2011">⬡ '11</button>
+      <button type="button" class="bdor-orb" data-bdor="2012">⬡ '12</button>
+      <button type="button" class="bdor-orb" data-bdor="2015">⬡ '15</button>
+      <button type="button" class="bdor-orb" data-bdor="2019">⬡ '19</button>
+      <button type="button" class="bdor-orb" data-bdor="2021">⬡ '21</button>
+      <button type="button" class="bdor-orb" data-bdor="2023">⬡ '23</button>
+    </div>
+    <div class="milestone-readout" id="leoReadout">
+      <span>LUSAIL ICONIC STADIUM 18.12.2022 · ARG 3 (4) – (2) 3 FRA · 2 GOALS + GOLDEN BALL · 8× BALLON D'OR · 4× UCL · 2× COPA AMÉRICA</span>
+      <span>ANTHEM: ♪ MUCHACHOS / LEO #10 [ON REPEAT]</span>
+    </div>
+  </div>
+</aside>
 
 <main id="top">
 
@@ -859,9 +1080,13 @@ body.hud-open .mode-btn--hud,
   <section class="hero">
     <div class="hero__top">
       <span>B.Tech Chemical Engineering, 3rd Year — NIT Calicut. Process modeling, machine learning, and quantitative systems.</span>
-      <span class="hero__edition" id="editionTrigger" title="Double-click for Albiceleste Mode">Portfolio<br/>Edition 2026 <b>✱</b></span>
+      <div class="hero__quick-themes">
+        <button type="button" class="theme-chip" data-trigger-theme="max" title="Activate Max #1 Pit Wall Theme + TuTuTuDu Audio">🦁 #1 Pit Wall</button>
+        <button type="button" class="theme-chip" data-trigger-theme="leo" title="Activate Leo #10 Albiceleste Theme + Anthem">★★★ #10 Albiceleste</button>
+        <button type="button" class="theme-chip" data-trigger-theme="classic" title="Reset to Archival Paper">Archival</button>
+      </div>
     </div>
-    <h1 class="hero__title" id="heroTitle" aria-label="Allen" data-cursor="10 · 33">Allen</h1>
+    <h1 class="hero__title" id="heroTitle" aria-label="Allen" data-cursor="10 · 1">Allen</h1>
     <div class="hero__bottom">
       <p class="hero__sub">A third-year <b>Chemical Engineering undergraduate</b> specializing in reactor modeling, scientific computing, and machine learning. Previously interned at <b>Süd-Chemie India Pvt. Ltd.</b></p>
       <div class="hero__scroll">Scroll <i></i></div>
@@ -905,9 +1130,9 @@ body.hud-open .mode-btn--hud,
         <ul class="about__meta">
           <li><span>Based in</span><span>Cochin, India</span></li>
           <li><span>Born</span><span>31.08.2005</span></li>
-          <li><span>Studying</span><span>Chem. Eng · NITC (3rd Year)</span></li>
+          <li><span>Studying</span><span>Chem. Eng · NITC (3rd Yr)</span></li>
           <li><span>Currently</span><span>Team Lead · Heeszo</span></li>
-          <li><span>Previously</span><span>Intern · Süd-Chemie</span></li>
+          <li><span>Previously</span><span>Intern · Sud-Chemie</span></li>
           <li><span>Focus</span><span>Process · ML · Quant</span></li>
         </ul>
       </div>
@@ -961,7 +1186,7 @@ body.hud-open .mode-btn--hud,
     </div>
   </section>
 
-  <!-- WORK -->
+  <!-- SELECTED WORK (With Expandable Technical Spec Drawers) -->
   <section class="section" id="work">
     <div class="section__head">
       <div class="section__head-left">
@@ -971,38 +1196,107 @@ body.hud-open .mode-btn--hud,
       <span class="sector-tag purple" data-sector="4"><i></i> DELTA · -0.331s</span>
     </div>
     <div class="rows" data-rows>
-      <a class="row" href="https://github.com/allenjoignatius-sys/Predictive-Maintenance-Dashboard-for-a-Shell-and-Tube-Heat-Exchanger" target="_blank" rel="noopener" data-reveal data-cursor="repo ↗">
-        <span class="row__no">01</span>
-        <span class="row__title">Predictive Maintenance Dashboard<span class="row__tags"><span class="tag">XGBoost</span><span class="tag">FastAPI</span><span class="tag">Chart.js</span></span></span>
-        <span class="row__meta">An end-to-end predictive maintenance framework for a shell-and-tube heat exchanger. Couples a physics-based effectiveness-NTU and Kern–Seaton fouling simulator with XGBoost and Random Forest ensembles to estimate equipment State of Health (SoH) and Remaining Useful Life (RUL) via a live Chart.js telemetry interface.</span>
-        <span class="row__year">Jun 18<br>2026</span>
-        <span class="row__arrow">↗</span>
-      </a>
-      <a class="row" href="https://github.com/allenjoignatius-sys/Deep-RL-Controller-for-Distillation-Energy-Reduction" target="_blank" rel="noopener" data-reveal data-cursor="repo ↗">
-        <span class="row__no">02</span>
-        <span class="row__title">Deep RL Energy Controller<span class="row__tags"><span class="tag">NumPy</span><span class="tag">DQN</span><span class="tag">FastAPI</span></span></span>
-        <span class="row__meta">A Double Deep Q-Network (Double-DQN) reinforcement learning controller engineered to minimize reboiler thermal duty in a binary distillation column while strictly satisfying distillate purity constraints—achieving an approximate 20% reduction in energy consumption relative to conventional fixed-setpoint baselines.</span>
-        <span class="row__year">Jun 19<br>2026</span>
-        <span class="row__arrow">↗</span>
-      </a>
-      <a class="row" href="https://github.com/allenjoignatius-sys/Inferential-Purity-Estimation-for-a-Binary-Distillation-Column" target="_blank" rel="noopener" data-reveal data-cursor="repo ↗">
-        <span class="row__no">03</span>
-        <span class="row__title">Distillation Soft Sensor<span class="row__tags"><span class="tag">scikit-learn</span><span class="tag">SVR</span><span class="tag">FastAPI</span></span></span>
-        <span class="row__meta">A real-time inferential soft sensor estimating overhead ethanol–water distillate composition from secondary tray temperatures, column pressure, and reflux ratio. Trained on rigorous vapor–liquid equilibrium (VLE) simulation data and deployed via an asynchronous FastAPI service.</span>
-        <span class="row__year">Jun 20<br>2026</span>
-        <span class="row__arrow">↗</span>
-      </a>
-      <a class="row" href="https://github.com/allenjoignatius-sys/cstr-hybrid-neural-network" target="_blank" rel="noopener" data-reveal data-cursor="repo ↗">
-        <span class="row__no">04</span>
-        <span class="row__title">CSTR Hybrid Neural Network<span class="row__tags"><span class="tag">scikit-learn</span><span class="tag">SciPy</span></span></span>
-        <span class="row__meta">A physics-informed neural network surrogate for a continuous stirred-tank reactor (CSTR), trained on numerical ODE integrations across irreversible, reversible, and parallel reaction networks to accelerate steady-state concentration predictions for real-time model predictive control (MPC).</span>
-        <span class="row__year">May 6<br>2026</span>
-        <span class="row__arrow">↗</span>
-      </a>
+
+      <!-- Project 01 -->
+      <div class="work-item" data-reveal>
+        <a class="row" href="https://github.com/allenjoignatius-sys/Predictive-Maintenance-Dashboard-for-a-Shell-and-Tube-Heat-Exchanger" target="_blank" rel="noopener" data-cursor="repo ↗">
+          <span class="row__no">01</span>
+          <span class="row__title">
+            Predictive Maintenance Dashboard
+            <span class="row__tags">
+              <span class="tag">XGBoost</span><span class="tag">FastAPI</span><span class="tag">Chart.js</span>
+              <button type="button" class="spec-toggle-btn" data-spec="spec1">+ Tech Specs</button>
+            </span>
+          </span>
+          <span class="row__meta">An end-to-end predictive maintenance framework for a shell-and-tube heat exchanger. Couples a physics-based effectiveness-NTU and Kern–Seaton fouling simulator with XGBoost and Random Forest ensembles to estimate equipment State of Health (SoH) and Remaining Useful Life (RUL) via a live Chart.js telemetry interface.</span>
+          <span class="row__year">Jun 18<br>2026</span>
+          <span class="row__arrow">↗</span>
+        </a>
+        <div class="spec-drawer" id="spec1">
+          <div class="spec-drawer__grid">
+            <div><strong>Physical Model</strong>Effectiveness-NTU heat transfer coupled with asymptotic Kern–Seaton fouling resistance kinetics.</div>
+            <div><strong>ML Architecture</strong>Gradient Boosted Decision Trees (XGBoost) &amp; Random Forest regressors for real-time RUL &amp; SoH inference.</div>
+            <div><strong>Deployment Stack</strong>Asynchronous FastAPI telemetry streaming server with live Chart.js prognostic diagnostics.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 02 -->
+      <div class="work-item" data-reveal>
+        <a class="row" href="https://github.com/allenjoignatius-sys/Deep-RL-Controller-for-Distillation-Energy-Reduction" target="_blank" rel="noopener" data-cursor="repo ↗">
+          <span class="row__no">02</span>
+          <span class="row__title">
+            Deep RL Energy Controller
+            <span class="row__tags">
+              <span class="tag">NumPy</span><span class="tag">DQN</span><span class="tag">FastAPI</span>
+              <button type="button" class="spec-toggle-btn" data-spec="spec2">+ Tech Specs</button>
+            </span>
+          </span>
+          <span class="row__meta">A Double Deep Q-Network (Double-DQN) reinforcement learning controller engineered to minimize reboiler thermal duty in a binary distillation column while strictly satisfying distillate purity constraints—achieving an approximate 20% reduction in energy consumption relative to conventional fixed-setpoint baselines.</span>
+          <span class="row__year">Jun 19<br>2026</span>
+          <span class="row__arrow">↗</span>
+        </a>
+        <div class="spec-drawer" id="spec2">
+          <div class="spec-drawer__grid">
+            <div><strong>Control Policy</strong>Custom Double-DQN built from scratch in pure NumPy with experience replay and target network stabilization.</div>
+            <div><strong>Process Environment</strong>Gym-compatible dynamic binary distillation column with feed composition disturbances.</div>
+            <div><strong>Performance</strong>~20% reboiler thermal energy reduction while maintaining overhead product purity above specification.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 03 -->
+      <div class="work-item" data-reveal>
+        <a class="row" href="https://github.com/allenjoignatius-sys/Inferential-Purity-Estimation-for-a-Binary-Distillation-Column" target="_blank" rel="noopener" data-cursor="repo ↗">
+          <span class="row__no">03</span>
+          <span class="row__title">
+            Distillation Soft Sensor
+            <span class="row__tags">
+              <span class="tag">scikit-learn</span><span class="tag">SVR</span><span class="tag">FastAPI</span>
+              <button type="button" class="spec-toggle-btn" data-spec="spec3">+ Tech Specs</button>
+            </span>
+          </span>
+          <span class="row__meta">A real-time inferential soft sensor estimating overhead ethanol–water distillate composition from secondary tray temperatures, column pressure, and reflux ratio. Trained on rigorous vapor–liquid equilibrium (VLE) simulation data and deployed via an asynchronous FastAPI service.</span>
+          <span class="row__year">Jun 20<br>2026</span>
+          <span class="row__arrow">↗</span>
+        </a>
+        <div class="spec-drawer" id="spec3">
+          <div class="spec-drawer__grid">
+            <div><strong>Thermodynamic Basis</strong>Non-ideal ethanol–water Vapor–Liquid Equilibrium (VLE) stage-by-stage tray temperature profiles.</div>
+            <div><strong>Estimator Pipeline</strong>Support Vector Regression (SVR) &amp; ensemble models eliminating hardware gas-chromatograph lag.</div>
+            <div><strong>Telemetry Interface</strong>Low-latency FastAPI REST backend with interactive operator monitoring dashboard.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 04 -->
+      <div class="work-item" data-reveal>
+        <a class="row" href="https://github.com/allenjoignatius-sys/cstr-hybrid-neural-network" target="_blank" rel="noopener" data-cursor="repo ↗">
+          <span class="row__no">04</span>
+          <span class="row__title">
+            CSTR Hybrid Neural Network
+            <span class="row__tags">
+              <span class="tag">scikit-learn</span><span class="tag">SciPy</span>
+              <button type="button" class="spec-toggle-btn" data-spec="spec4">+ Tech Specs</button>
+            </span>
+          </span>
+          <span class="row__meta">A physics-informed neural network surrogate for a continuous stirred-tank reactor (CSTR), trained on numerical ODE integrations across irreversible, reversible, and parallel reaction networks to accelerate steady-state concentration predictions for real-time model predictive control (MPC).</span>
+          <span class="row__year">May 6<br>2026</span>
+          <span class="row__arrow">↗</span>
+        </a>
+        <div class="spec-drawer" id="spec4">
+          <div class="spec-drawer__grid">
+            <div><strong>Kinetic Schemes</strong>Irreversible ($A \to B$), Reversible ($A \rightleftharpoons B$), and Parallel ($A \to B, A \to C$) reaction networks.</div>
+            <div><strong>Numerical Solver</strong>SciPy stiff ODE integration (`solve_ivp`) generating high-resolution training manifolds.</div>
+            <div><strong>Speedup</strong>Orders-of-magnitude faster steady-state concentration evaluation for real-time MPC loops.</div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
-  <!-- SKILLS -->
+  <!-- SKILLS (8 Core Competencies) -->
   <section class="section" id="skills">
     <div class="section__head">
       <div class="section__head-left">
@@ -1014,64 +1308,86 @@ body.hud-open .mode-btn--hud,
     <div class="skills__grid" data-skills>
       <div class="skill">
         <span class="skill__no">01</span>
-        <span class="skill__name">Reactor &amp; Process Modeling</span>
+        <span class="skill__name">Process Modeling</span>
       </div>
       <div class="skill">
         <span class="skill__no">02</span>
-        <span class="skill__name">Python &amp; Scientific Computing</span>
+        <span class="skill__name">Reaction Engineering</span>
       </div>
       <div class="skill">
         <span class="skill__no">03</span>
-        <span class="skill__name">Machine Learning &amp; Deep RL</span>
+        <span class="skill__name">Python / NumPy / SciPy</span>
       </div>
       <div class="skill">
         <span class="skill__no">04</span>
-        <span class="skill__name">Thermodynamics &amp; VLE</span>
+        <span class="skill__name">Machine Learning &amp; RL</span>
       </div>
       <div class="skill">
         <span class="skill__no">05</span>
-        <span class="skill__name">FastAPI &amp; Systems Architecture</span>
+        <span class="skill__name">FastAPI &amp; Microservices</span>
       </div>
       <div class="skill">
         <span class="skill__no">06</span>
-        <span class="skill__name">Quantitative Modeling</span>
+        <span class="skill__name">Process Control</span>
+      </div>
+      <div class="skill">
+        <span class="skill__no">07</span>
+        <span class="skill__name">Quantitative Systems</span>
+      </div>
+      <div class="skill">
+        <span class="skill__no">08</span>
+        <span class="skill__name">Thermodynamics &amp; VLE</span>
       </div>
     </div>
   </section>
 
 </main>
 
-<!-- LIVE F1 TELEMETRY HUD + DISCREET THEME CONTROLLER -->
-<div class="telemetry-dock" aria-label="Telemetry and theme controls">
-  <div class="f1-hud" id="f1Hud">
-    <div class="f1-hud__cell">
-      <span class="f1-hud__label"><span>VEL / GEAR</span><span id="hudDrs">DRS STBY</span></span>
-      <span class="f1-hud__val"><span id="hudSpeed">000</span><small>KM/H · <b id="hudGear">G1</b></small></span>
+<!-- FLOATING AUDIO PLAYER / MUTE / MP3 LOADER PILL -->
+<div class="audio-pill" id="audioPill" role="region" aria-label="Theme Audio Player">
+  <div class="eq-bars" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+  <span id="audioTrackLabel">♪ TUTUTUDU_MAX.MP3 [LOOP]</span>
+  <button type="button" class="audio-pill__btn" id="audioMuteBtn">MUTE</button>
+  <button type="button" class="audio-pill__btn" id="audioLoadBtn" title="Load your local .mp3 file to test immediately">LOAD MP3</button>
+</div>
+
+<!-- FIXED BOTTOM F1 TELEMETRY HUD BAR (Includes Prominent Pirelli Tyre Selector #2) -->
+<div class="f1-hud-bar" role="region" aria-label="F1 Telemetry HUD">
+  <!-- PROMINENT PIRELLI TYRE SELECTOR #2 -->
+  <button type="button" class="hud-tyre-btn" id="hudPirelliBtn" title="Click to change Pirelli Tyre Compound (Soft / Medium / Hard / Inter)">
+    <span class="hud-tyre-ring" id="hudTyreRing">S</span>
+    <span>TYRE: <strong id="hudTyreText" style="color:var(--tyre-color)">SOFT (C5)</strong></span>
+  </button>
+
+  <div class="hud-metrics">
+    <div class="hud-cell">
+      <span class="hud-cell__lbl">GEAR</span>
+      <span class="hud-cell__val" id="hudGear">G1</span>
     </div>
-    <div class="f1-hud__cell">
-      <span class="f1-hud__label"><span>THROTTLE</span><span id="hudThrPct">0%</span></span>
-      <div class="f1-bar"><div class="f1-bar__fill f1-bar__fill--thr" id="hudThrBar"></div></div>
-    </div>
-    <div class="f1-hud__cell">
-      <span class="f1-hud__label"><span>ERS SOC</span><span id="hudErsPct">98%</span></span>
-      <div class="f1-bar"><div class="f1-bar__fill f1-bar__fill--ers" id="hudErsBar" style="width:98%"></div></div>
-    </div>
-    <div class="f1-hud__cell">
-      <span class="f1-hud__label"><span>SECTORS</span><span id="hudGforce">1.0G</span></span>
-      <div class="f1-sectors">
-        <span class="f1-sec-pill purple" id="secPill1">S1</span>
-        <span class="f1-sec-pill green" id="secPill2">S2</span>
-        <span class="f1-sec-pill orange" id="secPill3">S3</span>
+    <div class="hud-cell">
+      <span class="hud-cell__lbl">RPM</span>
+      <span class="hud-cell__val" id="hudRpm">03,800</span>
+      <div class="hud-rpm-leds" id="hudRpmLeds" aria-hidden="true">
+        <span class="hud-led"></span><span class="hud-led"></span><span class="hud-led"></span>
+        <span class="hud-led"></span><span class="hud-led"></span><span class="hud-led"></span>
+        <span class="hud-led"></span><span class="hud-led"></span><span class="hud-led"></span>
+        <span class="hud-led"></span>
       </div>
     </div>
-  </div>
-
-  <div class="mode-pill">
-    <button type="button" class="mode-btn active" data-set-theme="classic" title="Standard Archival + Lion Orange">STD</button>
-    <button type="button" class="mode-btn" data-set-theme="orange-telemetry" title="Dutch Lion Orange + Carbon Telemetry (Shortcut: type 33 or max)">ORJ·33</button>
-    <button type="button" class="mode-btn" data-set-theme="albiceleste" title="Albiceleste Sky Blue & Gold (Shortcut: type 10 or messi)">ALB·10</button>
-    <button type="button" class="mode-btn" data-set-theme="apex" title="Combined #1 x #10 Apex Mode (Shortcut: type goat)">1×10</button>
-    <button type="button" class="mode-btn mode-btn--hud" id="toggleHudBtn" title="Toggle Live F1 Telemetry HUD">HUD</button>
+    <div class="hud-cell">
+      <span class="hud-cell__lbl">SPD</span>
+      <span class="hud-cell__val"><span id="hudSpeed">000</span> KM/H</span>
+    </div>
+    <div class="hud-pedals" title="Throttle (Green) / Brake (Red)">
+      <div class="hud-pedal-track"><div class="hud-pedal-fill--thr" id="hudThrBar"></div></div>
+      <div class="hud-pedal-track"><div class="hud-pedal-fill--brk" id="hudBrkBar"></div></div>
+    </div>
+    <span class="hud-drs-badge" id="hudDrsBadge">DRS STBY</span>
+    <div class="hud-sectors" title="Click sector pills for telemetry delta">
+      <span class="hud-sec purple" data-sec-info="S1 · 28.104s (PURPLE)">S1 -0.18</span>
+      <span class="hud-sec green" data-sec-info="S2 · 31.330s (PERSONAL BEST)">S2 -0.09</span>
+      <span class="hud-sec orange" data-sec-info="S3 · 19.018s (MAX V-MAX 342 KM/H)">S3 -0.33</span>
+    </div>
   </div>
 </div>
 
@@ -1101,6 +1417,14 @@ body.hud-open .mode-btn--hud,
   </div>
   <div class="footer__base">
     <span>© 2026 Allen Binoy · allenjo.in</span>
+    <!-- Secret Easter Egg Triggers in Footer -->
+    <div class="secret-triggers" aria-label="Easter Egg Theme Triggers">
+      <button type="button" class="secret-btn" data-trigger-theme="max" title="Max Verstappen #1 Mode (4× WDC + TuTuTuDu)">[ #1 ]</button>
+      <button type="button" class="secret-btn" data-trigger-theme="leo" title="Lionel Messi #10 Mode (1× WC + 8× Ballon d'Or)">[ #10 ]</button>
+      <button type="button" class="secret-btn" id="footer33Btn" title="2023 RB19 19/22 Wins Dominance">[ 33 ]</button>
+      <button type="button" class="secret-btn" id="footer8StarBtn" title="8× Ballon d'Or & Lusail 2022">[ 8★ ]</button>
+      <button type="button" class="secret-btn" data-trigger-theme="classic" title="Reset to Archival Paper (ESC)">[ STD ]</button>
+    </div>
     <span id="clock2">--:--:-- IST</span>
     <a href="#top" class="totop">Back to top ↑</a>
   </div>
@@ -1120,7 +1444,7 @@ body.hud-open .mode-btn--hud,
     toastEl.textContent = msg;
     toastEl.classList.add('show');
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(function(){ toastEl.classList.remove('show'); }, 2700);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove('show'); }, 3400);
   }
 
   /* ---------- LOADER ---------- */
@@ -1137,11 +1461,11 @@ body.hud-open .mode-btn--hud,
   } else {
     var n = 0;
     var tick = setInterval(function(){
-      n += Math.floor(Math.random()*9)+3;
-      if(n >= 100){ n = 100; clearInterval(tick); setTimeout(finishLoad, 350); }
+      n += Math.floor(Math.random()*9)+4;
+      if(n >= 100){ n = 100; clearInterval(tick); setTimeout(finishLoad, 320); }
       if(countEl) countEl.textContent = String(n).padStart(3,'0');
       if(loadbar) loadbar.style.width = n + '%';
-    }, 80);
+    }, 75);
   }
 
   /* ---------- HERO PER-LETTER SPLIT ---------- */
@@ -1176,7 +1500,20 @@ body.hud-open .mode-btn--hud,
     });
   }
 
-  /* ---------- CUSTOM CURSOR + G-FORCE TRACKING ---------- */
+  /* ---------- EXPANDABLE TECHNICAL SPEC DRAWERS ---------- */
+  document.querySelectorAll('.spec-toggle-btn').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      var targetId = btn.getAttribute('data-spec');
+      var drawer = document.getElementById(targetId);
+      if(!drawer) return;
+      var isOpen = drawer.classList.toggle('open');
+      btn.textContent = isOpen ? '− Hide Specs' : '+ Tech Specs';
+    });
+  });
+
+  /* ---------- CUSTOM CURSOR ---------- */
   var mouseVel = 0;
   var lastMx = window.innerWidth/2, lastMy = window.innerHeight/2;
   if(finePointer && !reduce){
@@ -1197,7 +1534,7 @@ body.hud-open .mode-btn--hud,
       ring.style.transform='translate('+rx+'px,'+ry+'px) translate(-50%,-50%)';
       requestAnimationFrame(loop);
     })();
-    var hoverSel = 'a,button,[data-magnetic],[data-cursor],.row,.skill,.about__photo,.marquee,.section__index,.nav__telemetry';
+    var hoverSel = 'a,button,[data-magnetic],[data-cursor],.row,.skill,.about__photo,.marquee,.section__index';
     document.querySelectorAll(hoverSel).forEach(function(el){
       el.addEventListener('mouseenter', function(){
         document.body.classList.add('hovering');
@@ -1245,40 +1582,54 @@ body.hud-open .mode-btn--hud,
   });
 
   /* ============================================================
-     F1 TELEMETRY ENGINE (RPM LEDs, Speed, Gear, DRS, ERS, G-Force)
+     PROMINENT PIRELLI TYRE COMPOUND SELECTOR (BOTH TOP NAV & HUD)
+  ============================================================ */
+  var pirelliCompounds = [
+    { code:'S', label:'SOFT · C5', hud:'SOFT (C5)', color:'#FF1801', marqSpeed:'16s', grip:'MAX MECHANICAL GRIP · QUALI PACE' },
+    { code:'M', label:'MEDIUM · C3', hud:'MEDIUM (C3)', color:'#FFD700', marqSpeed:'24s', grip:'BALANCED STINT PACE · OPTIMAL THERMAL WINDOW' },
+    { code:'H', label:'HARD · C1', hud:'HARD (C1)', color:'#FFFFFF', marqSpeed:'34s', grip:'LONG-STINT ENDURANCE · LOW DEGRADATION' },
+    { code:'I', label:'INTER · WET', hud:'INTER (WET)', color:'#00D2BE', marqSpeed:'20s', grip:'INTERMEDIATE WET WEATHER · STANDING WATER EVACUATION' }
+  ];
+  var currentCompoundIdx = 0;
+
+  var navPirelliBtn = document.getElementById('navPirelliBtn');
+  var navTyreWheel = document.getElementById('navTyreWheel');
+  var navTyreName = document.getElementById('navTyreName');
+  var hudPirelliBtn = document.getElementById('hudPirelliBtn');
+  var hudTyreRing = document.getElementById('hudTyreRing');
+  var hudTyreText = document.getElementById('hudTyreText');
+
+  function cyclePirelliCompound(){
+    currentCompoundIdx = (currentCompoundIdx + 1) % pirelliCompounds.length;
+    var c = pirelliCompounds[currentCompoundIdx];
+    document.documentElement.style.setProperty('--tyre-color', c.color);
+    document.documentElement.style.setProperty('--marq-speed', c.marqSpeed);
+    if(navTyreWheel) navTyreWheel.textContent = '(' + c.code + ')';
+    if(navTyreName) navTyreName.textContent = c.label;
+    if(hudTyreRing) hudTyreRing.textContent = c.code;
+    if(hudTyreText) hudTyreText.textContent = c.hud;
+    showToast('🛞 BOX BOX · PIRELLI ' + c.hud + ' FITTED — ' + c.grip);
+  }
+
+  if(navPirelliBtn) navPirelliBtn.addEventListener('click', cyclePirelliCompound);
+  if(hudPirelliBtn) hudPirelliBtn.addEventListener('click', cyclePirelliCompound);
+
+  /* ============================================================
+     F1 TELEMETRY HUD ENGINE (Gear 1-8, RPM 0-15,000, Speed, DRS)
   ============================================================ */
   var prog = document.getElementById('progress');
-  var rpmLeds = Array.prototype.slice.call(document.querySelectorAll('.rpm-led'));
-  var navGear = document.getElementById('navGear');
-  var navSpeed = document.getElementById('navSpeed');
-  var drsDot = document.getElementById('drsDot');
-  var hudSpeed = document.getElementById('hudSpeed');
   var hudGear = document.getElementById('hudGear');
-  var hudDrs = document.getElementById('hudDrs');
-  var hudThrPct = document.getElementById('hudThrPct');
+  var hudRpm = document.getElementById('hudRpm');
+  var hudSpeed = document.getElementById('hudSpeed');
   var hudThrBar = document.getElementById('hudThrBar');
-  var hudErsPct = document.getElementById('hudErsPct');
-  var hudErsBar = document.getElementById('hudErsBar');
-  var hudGforce = document.getElementById('hudGforce');
-
+  var hudBrkBar = document.getElementById('hudBrkBar');
+  var hudDrsBadge = document.getElementById('hudDrsBadge');
+  var hudLeds = Array.prototype.slice.call(document.querySelectorAll('#hudRpmLeds .hud-led'));
   var paraEls = Array.prototype.slice.call(document.querySelectorAll('[data-parallax]'));
+
   var lastScrollY = window.scrollY || 0;
   var scrollVel = 0;
-  var scrollIdleTimer = null;
-
-  function updateRpmLeds(pct, speedKmh){
-    // Light up 12 LEDs based on a mix of scroll depth and instantaneous speed
-    var activeCount = Math.min(12, Math.round((pct / 100) * 8 + (speedKmh / 340) * 6));
-    rpmLeds.forEach(function(led, idx){
-      led.className = 'rpm-led';
-      if(idx < activeCount){
-        if(idx < 4) led.classList.add('on', 'green');
-        else if(idx < 8) led.classList.add('on', 'orange');
-        else if(idx < 10) led.classList.add('on', 'red');
-        else led.classList.add('on', 'blue');
-      }
-    });
-  }
+  var brakingIntensity = 0;
 
   function onScroll(){
     var st = window.scrollY || document.documentElement.scrollTop;
@@ -1286,15 +1637,13 @@ body.hud-open .mode-btn--hud,
     var pct = h > 0 ? (st / h * 100) : 0;
     if(prog) prog.style.width = pct + '%';
 
-    var delta = Math.abs(st - lastScrollY);
+    var rawDelta = st - lastScrollY;
+    var absDelta = Math.abs(rawDelta);
+    if(rawDelta < 0 && absDelta > 4){
+      brakingIntensity = Math.min(100, absDelta * 4.5);
+    }
     lastScrollY = st;
-    scrollVel = Math.min(342, Math.round(delta * 6.8));
-
-    document.body.classList.add('scrolling-active');
-    clearTimeout(scrollIdleTimer);
-    scrollIdleTimer = setTimeout(function(){
-      document.body.classList.remove('scrolling-active');
-    }, 900);
+    scrollVel = Math.min(346, Math.round(absDelta * 7.2));
 
     if(!reduce){
       paraEls.forEach(function(el){
@@ -1307,20 +1656,20 @@ body.hud-open .mode-btn--hud,
   window.addEventListener('scroll', onScroll, {passive:true});
   onScroll();
 
-  // Telemetry decay & live HUD refresh loop (60fps smoothed)
   var displaySpeed = 0;
   (function telemetryLoop(){
-    var targetSpeed = Math.max(scrollVel, Math.round(mouseVel * 1.9));
+    var targetSpeed = Math.max(scrollVel, Math.round(mouseVel * 1.8));
     displaySpeed += (targetSpeed - displaySpeed) * 0.18;
     scrollVel *= 0.88;
     mouseVel *= 0.88;
+    brakingIntensity *= 0.84;
 
-    var kmh = Math.min(345, Math.max(0, Math.round(displaySpeed)));
+    var kmh = Math.min(346, Math.max(0, Math.round(displaySpeed)));
     var st = window.scrollY || document.documentElement.scrollTop;
     var h = document.documentElement.scrollHeight - window.innerHeight;
     var pct = h > 0 ? (st / h * 100) : 0;
 
-    // Compute F1 Gear (1 to 8)
+    // Gear 1-8
     var gear = 1;
     if(kmh > 295) gear = 8;
     else if(kmh > 250) gear = 7;
@@ -1331,59 +1680,415 @@ body.hud-open .mode-btn--hud,
     else if(kmh > 25) gear = 2;
     else gear = Math.max(1, Math.min(8, Math.ceil((pct + 1) / 12.5)));
 
-    var speedStr = String(kmh).padStart(3, '0');
-    if(navGear) navGear.textContent = 'G' + gear;
-    if(navSpeed) navSpeed.textContent = speedStr + ' KM/H';
-    if(hudSpeed) hudSpeed.textContent = speedStr;
+    // RPM 3,800 idle up to 15,000 redline
+    var rpm = Math.min(15000, Math.round(3800 + (kmh / 346) * 11200));
     if(hudGear) hudGear.textContent = 'G' + gear;
+    if(hudRpm) hudRpm.textContent = rpm.toLocaleString('en-US').padStart(6, '0');
+    if(hudSpeed) hudSpeed.textContent = String(kmh).padStart(3, '0');
 
-    // DRS activates above 180 km/h
-    var drsActive = kmh >= 180;
-    if(drsDot) drsDot.classList.toggle('active', drsActive);
-    if(hudDrs){
-      hudDrs.textContent = drsActive ? 'DRS OPEN' : 'DRS STBY';
-      hudDrs.style.color = drsActive ? '#10B981' : '';
+    // RPM Shift LEDs (10 LEDs)
+    var litCount = Math.min(10, Math.round(((rpm - 3800) / 11200) * 10));
+    hudLeds.forEach(function(led, i){
+      led.className = 'hud-led';
+      if(i < litCount){
+        if(i < 3) led.classList.add('on', 'green');
+        else if(i < 6) led.classList.add('on', 'orange');
+        else if(i < 8) led.classList.add('on', 'red');
+        else led.classList.add('on', 'purple');
+      }
+    });
+
+    // Throttle & Brake bars
+    var thr = Math.min(100, Math.round((kmh / 300) * 100));
+    if(hudThrBar) hudThrBar.style.width = thr + '%';
+    if(hudBrkBar) hudBrkBar.style.width = Math.round(brakingIntensity) + '%';
+
+    // DRS Indicator
+    if(hudDrsBadge){
+      hudDrsBadge.className = 'hud-drs-badge';
+      if(kmh >= 180){
+        hudDrsBadge.classList.add('active');
+        hudDrsBadge.textContent = 'DRS ACTIVE';
+      } else if(pct > 20){
+        hudDrsBadge.classList.add('available');
+        hudDrsBadge.textContent = 'DRS AVAILABLE';
+      } else {
+        hudDrsBadge.textContent = 'DRS STBY';
+      }
     }
 
-    // Throttle & ERS SOC
-    var thr = Math.min(100, Math.round((kmh / 320) * 100));
-    if(hudThrPct) hudThrPct.textContent = thr + '%';
-    if(hudThrBar) hudThrBar.style.width = thr + '%';
-
-    var ers = Math.max(18, Math.round(100 - (pct * 0.65)));
-    if(hudErsPct) hudErsPct.textContent = ers + '%';
-    if(hudErsBar) hudErsBar.style.width = ers + '%';
-
-    // Simulated Lateral/Longitudinal G-Force
-    var gForce = (1.0 + (kmh / 345) * 4.2).toFixed(1);
-    if(hudGforce) hudGforce.textContent = gForce + 'G';
-
-    updateRpmLeds(pct, kmh);
     requestAnimationFrame(telemetryLoop);
   })();
 
-  /* ---------- TIRE COMPOUND CYCLER ---------- */
-  var compounds = [
-    { code:'O', name:'Dutch Lion Orange Special' },
-    { code:'S', name:'Pirelli P-Zero Soft (Red)' },
-    { code:'M', name:'Pirelli P-Zero Medium (Yellow)' },
-    { code:'H', name:'Pirelli P-Zero Hard (White)' }
-  ];
-  var compIdx = 0;
-  var tireBadge = document.getElementById('tireBadge');
-  var navTelemetry = document.getElementById('navTelemetry');
-  if(navTelemetry){
-    navTelemetry.addEventListener('click', function(){
-      compIdx = (compIdx + 1) % compounds.length;
-      if(tireBadge){
-        tireBadge.setAttribute('data-compound', compounds[compIdx].code);
-        tireBadge.textContent = compounds[compIdx].code;
-      }
-      showToast('BOX BOX · ' + compounds[compIdx].name);
+  document.querySelectorAll('.hud-sec').forEach(function(secEl){
+    secEl.addEventListener('click', function(){
+      showToast('⏱️ ' + secEl.getAttribute('data-sec-info'));
     });
-    navTelemetry.addEventListener('dblclick', function(e){
+  });
+
+  /* ============================================================
+     THEME AUDIO ENGINE (MP3 LOOP + WEB AUDIO SYNTH FALLBACK)
+  ============================================================ */
+  var maxAudio = document.getElementById('maxAudio');
+  var leoAudio = document.getElementById('leoAudio');
+  var audioPill = document.getElementById('audioPill');
+  var audioTrackLabel = document.getElementById('audioTrackLabel');
+  var audioMuteBtn = document.getElementById('audioMuteBtn');
+  var audioLoadBtn = document.getElementById('audioLoadBtn');
+  var customAudioInput = document.getElementById('customAudioInput');
+
+  var audioCtx = null;
+  var synthInterval = null;
+  var isMuted = false;
+  var activeThemeMode = 'classic';
+
+  function stopAllAudio(){
+    if(maxAudio){ maxAudio.pause(); maxAudio.currentTime = 0; }
+    if(leoAudio){ leoAudio.pause(); leoAudio.currentTime = 0; }
+    if(synthInterval){ clearInterval(synthInterval); synthInterval = null; }
+  }
+
+  function ensureAudioCtx(){
+    if(!audioCtx){
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if(AC) audioCtx = new AC();
+    }
+    if(audioCtx && audioCtx.state === 'suspended'){
+      audioCtx.resume();
+    }
+  }
+
+  function playSynthNote(freq, dur, type, gainVal){
+    if(isMuted) return;
+    ensureAudioCtx();
+    if(!audioCtx) return;
+    var now = audioCtx.currentTime;
+    var osc = audioCtx.createOscillator();
+    var gain = audioCtx.createGain();
+    osc.type = type || 'sawtooth';
+    osc.frequency.setValueAtTime(freq, now);
+    gain.gain.setValueAtTime(gainVal || 0.08, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(now);
+    osc.stop(now + dur);
+  }
+
+  // Synthesizes the iconic "Tu-tu-tu-du Max Verstappen" rhythmic hook loop if MP3 isn't dropped in yet
+  function startMaxSynthLoop(){
+    if(synthInterval) clearInterval(synthInterval);
+    // Pattern: Tu (D4) - tu (D4) - tu (D4) - du (F4) | Max (G4) Ver- (G4) stap- (F4) pen (D4)
+    var pattern = [
+      { f:293.66, d:0.14, t:'sawtooth' }, // Tu
+      { f:293.66, d:0.14, t:'sawtooth' }, // tu
+      { f:293.66, d:0.14, t:'sawtooth' }, // tu
+      { f:349.23, d:0.26, t:'sawtooth' }, // du!
+      { f:0,      d:0.12 },
+      { f:392.00, d:0.22, t:'square' },   // Max
+      { f:392.00, d:0.18, t:'square' },   // Ver-
+      { f:349.23, d:0.20, t:'square' },   // stap-
+      { f:293.66, d:0.32, t:'sawtooth' }, // pen!
+      { f:0,      d:0.25 }
+    ];
+    var step = 0;
+    synthInterval = setInterval(function(){
+      if(activeThemeMode !== 'max' || isMuted) return;
+      var note = pattern[step % pattern.length];
+      if(note.f > 0) playSynthNote(note.f, note.d, note.t, 0.065);
+      step++;
+    }, 210);
+  }
+
+  // Synthesizes the "Muchachos" Albiceleste stadium brass melody loop if MP3 isn't dropped in yet
+  function startLeoSynthLoop(){
+    if(synthInterval) clearInterval(synthInterval);
+    var pattern = [
+      { f:392.00, d:0.22, t:'triangle' }, // G4
+      { f:440.00, d:0.22, t:'triangle' }, // A4
+      { f:493.88, d:0.30, t:'triangle' }, // B4
+      { f:587.33, d:0.35, t:'triangle' }, // D5
+      { f:587.33, d:0.25, t:'triangle' }, // D5
+      { f:523.25, d:0.25, t:'triangle' }, // C5
+      { f:493.88, d:0.35, t:'triangle' }, // B4
+      { f:440.00, d:0.35, t:'triangle' }, // A4
+      { f:392.00, d:0.40, t:'triangle' }, // G4
+      { f:0,      d:0.20 }
+    ];
+    var step = 0;
+    synthInterval = setInterval(function(){
+      if(activeThemeMode !== 'leo' || isMuted) return;
+      var note = pattern[step % pattern.length];
+      if(note.f > 0) playSynthNote(note.f, note.d, note.t, 0.08);
+      step++;
+    }, 260);
+  }
+
+  function playThemeAudio(mode){
+    stopAllAudio();
+    if(mode === 'classic'){
+      if(audioPill) audioPill.classList.remove('visible');
+      return;
+    }
+    if(audioPill) audioPill.classList.add('visible');
+
+    if(mode === 'max'){
+      if(audioTrackLabel) audioTrackLabel.textContent = '♪ TUTUTUDU_MAX.MP3 [LOOP]';
+      if(maxAudio && !isMuted){
+        var p = maxAudio.play();
+        if(p && typeof p.catch === 'function'){
+          p.catch(function(){
+            // MP3 file not added yet or blocked -> run built-in TuTuTuDu synth loop!
+            startMaxSynthLoop();
+          });
+        }
+      } else if(!isMuted){
+        startMaxSynthLoop();
+      }
+    } else if(mode === 'leo'){
+      if(audioTrackLabel) audioTrackLabel.textContent = '♪ MUCHACHOS_LEO10.MP3 [LOOP]';
+      if(leoAudio && !isMuted){
+        var p2 = leoAudio.play();
+        if(p2 && typeof p2.catch === 'function'){
+          p2.catch(function(){
+            startLeoSynthLoop();
+          });
+        }
+      } else if(!isMuted){
+        startLeoSynthLoop();
+      }
+    }
+  }
+
+  if(maxAudio){
+    maxAudio.addEventListener('error', function(){
+      if(activeThemeMode === 'max') startMaxSynthLoop();
+    });
+  }
+  if(leoAudio){
+    leoAudio.addEventListener('error', function(){
+      if(activeThemeMode === 'leo') startLeoSynthLoop();
+    });
+  }
+
+  if(audioMuteBtn){
+    audioMuteBtn.addEventListener('click', function(){
+      isMuted = !isMuted;
+      audioMuteBtn.textContent = isMuted ? 'UNMUTE' : 'MUTE';
+      if(audioPill) audioPill.classList.toggle('muted', isMuted);
+      if(isMuted){
+        stopAllAudio();
+      } else {
+        playThemeAudio(activeThemeMode);
+      }
+    });
+  }
+
+  // Allow user to load any local MP3 file on the fly to test their track immediately
+  if(audioLoadBtn && customAudioInput){
+    audioLoadBtn.addEventListener('click', function(){
+      customAudioInput.click();
+    });
+    customAudioInput.addEventListener('change', function(e){
+      var file = e.target.files && e.target.files[0];
+      if(!file) return;
+      var url = URL.createObjectURL(file);
+      if(activeThemeMode === 'leo' && leoAudio){
+        leoAudio.src = url;
+      } else if(maxAudio){
+        maxAudio.src = url;
+      }
+      isMuted = false;
+      if(audioMuteBtn) audioMuteBtn.textContent = 'MUTE';
+      if(audioPill) audioPill.classList.remove('muted');
+      if(audioTrackLabel) audioTrackLabel.textContent = '♪ ' + file.name.toUpperCase() + ' [LOOP]';
+      playThemeAudio(activeThemeMode === 'classic' ? 'max' : activeThemeMode);
+      showToast('🔊 LOADED CUSTOM TRACK ON REPEAT: ' + file.name);
+    });
+  }
+
+  /* ============================================================
+     GOLDEN CONFETTI / STARLIGHT PULSE (LUSAIL 18.12.2022)
+  ============================================================ */
+  var starCanvas = document.getElementById('starCanvas');
+  var starCtx = starCanvas ? starCanvas.getContext('2d') : null;
+  var particles = [];
+
+  function resizeCanvas(){
+    if(!starCanvas) return;
+    starCanvas.width = window.innerWidth;
+    starCanvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  function triggerGoldenBurst(){
+    if(!starCtx || reduce) return;
+    var colors = ['#F5C542', '#75AADB', '#FFFFFF', '#D4AF37'];
+    for(var i = 0; i < 65; i++){
+      particles.push({
+        x: window.innerWidth / 2 + (Math.random() - 0.5) * 300,
+        y: window.innerHeight / 3,
+        vx: (Math.random() - 0.5) * 10,
+        vy: (Math.random() - 0.7) * 9 - 2,
+        size: Math.random() * 6 + 3,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        alpha: 1
+      });
+    }
+  }
+
+  (function renderParticles(){
+    if(starCtx && particles.length > 0){
+      starCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
+      for(var i = particles.length - 1; i >= 0; i--){
+        var p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.18;
+        p.alpha -= 0.014;
+        if(p.alpha <= 0){
+          particles.splice(i, 1);
+          continue;
+        }
+        starCtx.fillStyle = p.color;
+        starCtx.globalAlpha = p.alpha;
+        starCtx.fillRect(p.x, p.y, p.size, p.size);
+      }
+      starCtx.globalAlpha = 1;
+    }
+    requestAnimationFrame(renderParticles);
+  })();
+
+  /* ============================================================
+     MAX & LEO THEME SWITCHER + MILESTONE EASTER EGG HANDLERS
+  ============================================================ */
+  var logoStar = document.getElementById('logoStar');
+  var rb19Sweep = document.getElementById('rb19Sweep');
+
+  function triggerRb19Sweep(){
+    if(!rb19Sweep) return;
+    rb19Sweep.classList.remove('active');
+    void rb19Sweep.offsetWidth;
+    rb19Sweep.classList.add('active');
+  }
+
+  function setPortfolioTheme(mode){
+    activeThemeMode = mode;
+    document.body.classList.remove('theme-max', 'theme-leo');
+    if(mode === 'max'){
+      document.body.classList.add('theme-max');
+      if(logoStar) logoStar.textContent = '#1';
+      playThemeAudio('max');
+      showToast('🦁 MAX VERSTAPPEN #1 PIT WALL · 4× WDC · TUTUTUDU ON REPEAT');
+    } else if(mode === 'leo'){
+      document.body.classList.add('theme-leo');
+      if(logoStar) logoStar.textContent = '10';
+      playThemeAudio('leo');
+      triggerGoldenBurst();
+      showToast('★★★ LIONEL MESSI #10 ALBICELESTE · 1× WC · 8× BALLON D\'OR');
+    } else {
+      if(logoStar) logoStar.textContent = '©';
+      playThemeAudio('classic');
+      showToast('ARCHIVAL PAPER + DUTCH LION ORANGE');
+    }
+
+    document.querySelectorAll('[data-trigger-theme]').forEach(function(btn){
+      btn.classList.toggle('active', btn.getAttribute('data-trigger-theme') === mode);
+    });
+  }
+
+  document.querySelectorAll('[data-trigger-theme]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      setPortfolioTheme(btn.getAttribute('data-trigger-theme'));
+    });
+  });
+
+  if(logoStar){
+    logoStar.addEventListener('click', function(e){
+      e.preventDefault();
       e.stopPropagation();
-      document.body.classList.toggle('hud-open');
+      var next = activeThemeMode === 'classic' ? 'max' : (activeThemeMode === 'max' ? 'leo' : 'classic');
+      setPortfolioTheme(next);
+    });
+  }
+
+  // Max 4× WDC Crowns (2021, 2022, 2023, 2024)
+  var wdcNotes = {
+    '2021': '👑 2021 WDC #1 · ABU DHABI GP LAP 58/58 LAST-LAP OVERTAKE ON C5 SOFTS · 10 WINS · 18 PODIUMS',
+    '2022': '👑 2022 WDC #2 · CLINCHED IN THE RAIN AT SUZUKA · 15 WINS · 454 POINTS',
+    '2023': '👑 2023 WDC #3 · LUSAIL SPRINT · 19/22 WINS (86.36%) · 10 CONSECUTIVE WINS · 1,003/1,066 LAPS LED · 575 PTS',
+    '2024': '👑 2024 WDC #4 · CLINCHED UNDER THE LIGHTS IN LAS VEGAS · INTERLAGOS P17 → P1 WET MASTERCLASS'
+  };
+  var maxReadout = document.getElementById('maxReadout');
+  document.querySelectorAll('[data-wdc]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('[data-wdc]').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      var yr = btn.getAttribute('data-wdc');
+      if(maxReadout) maxReadout.firstElementChild.textContent = wdcNotes[yr];
+      showToast(wdcNotes[yr]);
+    });
+  });
+
+  // 2023 RB19 19/22 Dominance Button & Footer [ 33 ]
+  var rb19Btn = document.getElementById('rb19DominanceBtn');
+  var footer33Btn = document.getElementById('footer33Btn');
+  function activateRb19Dominance(){
+    if(activeThemeMode !== 'max') setPortfolioTheme('max');
+    triggerRb19Sweep();
+    showToast('🚀 2023 RB19 OVERDRIVE: 19/22 WINS (86.36%) · 10 STRAIGHT WINS · 1,003 LAPS LED · 575 PTS');
+  }
+  if(rb19Btn) rb19Btn.addEventListener('click', activateRb19Dominance);
+  if(footer33Btn) footer33Btn.addEventListener('click', activateRb19Dominance);
+
+  // Leo 8× Ballon d'Or Orbs
+  var bdorNotes = {
+    '2009': '⬡ 2009 BALLON D\'OR #1 · HISTORIC SEXTUPLE · 38 GOALS & UCL FINAL HEADER IN ROME',
+    '2010': '⬡ 2010 BALLON D\'OR #2 · 60 GOALS IN CALENDAR YEAR · LA LIGA & EUROPEAN GOLDEN SHOE',
+    '2011': '⬡ 2011 BALLON D\'OR #3 · WEMBLEY UCL FINAL MASTERCLASS · 59 GOALS & 36 ASSISTS',
+    '2012': '⬡ 2012 BALLON D\'OR #4 · ALL-TIME WORLD RECORD 91 GOALS IN A SINGLE CALENDAR YEAR',
+    '2015': '⬡ 2015 BALLON D\'OR #5 · SECOND EUROPEAN TREBLE · 58 GOALS & COPA DEL REY SOLO GOAL',
+    '2019': '⬡ 2019 BALLON D\'OR #6 · 51 GOALS · 6TH EUROPEAN GOLDEN SHOE & LA LIGA TITLE',
+    '2021': '⬡ 2021 BALLON D\'OR #7 · COPA AMÉRICA 2021 CHAMPION & TOURNAMENT BEST PLAYER AT MARACANÃ',
+    '2023': '⬡ 2023 BALLON D\'OR #8 · QATAR 2022 WORLD CUP CHAMPION & 2× WORLD CUP GOLDEN BALL WINNER'
+  };
+  var leoReadout = document.getElementById('leoReadout');
+  document.querySelectorAll('[data-bdor]').forEach(function(orb){
+    orb.addEventListener('click', function(){
+      document.querySelectorAll('[data-bdor]').forEach(function(o){ o.classList.remove('active'); });
+      orb.classList.add('active');
+      var yr = orb.getAttribute('data-bdor');
+      if(leoReadout) leoReadout.firstElementChild.textContent = bdorNotes[yr];
+      showToast(bdorNotes[yr]);
+    });
+  });
+
+  // Top Nav ★★★ & Lusail Final & 3 WC Finals & 91-Goal Record Buttons
+  var wcStarsBtn = document.getElementById('wcStarsBtn');
+  var lusailFinalBtn = document.getElementById('lusailFinalBtn');
+  var wcFinalsBtn = document.getElementById('wcFinalsBtn');
+  var record91Btn = document.getElementById('record91Btn');
+  var footer8StarBtn = document.getElementById('footer8StarBtn');
+
+  function triggerLusailCelebration(){
+    if(activeThemeMode !== 'leo') setPortfolioTheme('leo');
+    triggerGoldenBurst();
+    showToast('★★★ LUSAIL 18.12.2022 · ARG 3 (4) – (2) 3 FRA · 1× WORLD CUP · 2× WC GOLDEN BALL');
+  }
+  if(wcStarsBtn) wcStarsBtn.addEventListener('click', triggerLusailCelebration);
+  if(lusailFinalBtn) lusailFinalBtn.addEventListener('click', triggerLusailCelebration);
+  if(footer8StarBtn) footer8StarBtn.addEventListener('click', triggerLusailCelebration);
+
+  if(wcFinalsBtn){
+    wcFinalsBtn.addEventListener('click', function(){
+      triggerGoldenBurst();
+      showToast('🌍 3 MAJOR GLOBAL FINALS ERA & 2× WORLD CUP FINALS (2014, 2022) · ONLY 2× WC GOLDEN BALL WINNER IN HISTORY');
+    });
+  }
+  if(record91Btn){
+    record91Btn.addEventListener('click', function(){
+      showToast('⚽ 91 GOALS IN 2012 (ALL-TIME RECORD) · 6× EUROPEAN GOLDEN SHOE · 4× CHAMPIONS LEAGUE · 2× COPA AMÉRICA');
     });
   }
 
@@ -1396,6 +2101,12 @@ body.hud-open .mode-btn--hud,
     if(clock2) clock2.textContent = t + ' IST';
   }
   tickClock(); setInterval(tickClock, 1000);
+
+  if(clock){
+    clock.addEventListener('dblclick', function(){
+      setPortfolioTheme(activeThemeMode === 'max' ? 'classic' : 'max');
+    });
+  }
 
   /* ---------- COPY EMAIL BUTTON ---------- */
   var copyBtn = document.getElementById('copyEmailBtn');
@@ -1410,7 +2121,7 @@ body.hud-open .mode-btn--hud,
       ta.select();
       try {
         document.execCommand('copy');
-        showToast('Email copied to clipboard');
+        showToast('Email copied to clipboard: ' + email);
       } catch(err){
         showToast(email);
       }
@@ -1418,77 +2129,7 @@ body.hud-open .mode-btn--hud,
     });
   }
 
-  /* ============================================================
-     HIDDEN EASTER EGGS (Themes, Keyboard Shortcuts, Sector Flash)
-  ============================================================ */
-  var themes = ['classic', 'orange-telemetry', 'albiceleste', 'apex'];
-  var logoStar = document.getElementById('logoStar');
-  var modeBtns = document.querySelectorAll('[data-set-theme]');
-  var toggleHudBtn = document.getElementById('toggleHudBtn');
-
-  function applySecretTheme(themeName){
-    document.documentElement.setAttribute('data-theme', themeName);
-    modeBtns.forEach(function(btn){
-      btn.classList.toggle('active', btn.getAttribute('data-set-theme') === themeName);
-    });
-    if(themeName === 'orange-telemetry'){
-      if(logoStar) logoStar.textContent = '33';
-      showToast('🦁 #33 ORANGE ARMY · RB TELEMETRY ACTIVE');
-    } else if(themeName === 'albiceleste'){
-      if(logoStar) logoStar.textContent = '10';
-      showToast('★ ★ ★ #10 ALBICELESTE PALETTE UNLOCKED');
-    } else if(themeName === 'apex'){
-      if(logoStar) logoStar.textContent = '1×10';
-      showToast('⚡ #01 × #10 APEX CHAMPION MODE');
-    } else {
-      if(logoStar) logoStar.textContent = '©';
-      showToast('STANDARD ARCHIVAL + LION ORANGE');
-    }
-  }
-
-  modeBtns.forEach(function(btn){
-    btn.addEventListener('click', function(){
-      applySecretTheme(btn.getAttribute('data-set-theme'));
-    });
-  });
-
-  if(toggleHudBtn){
-    toggleHudBtn.addEventListener('click', function(){
-      document.body.classList.toggle('hud-open');
-      var isOpen = document.body.classList.contains('hud-open');
-      showToast(isOpen ? 'F1 TELEMETRY HUD ENABLED' : 'F1 TELEMETRY HUD MINIMIZED');
-    });
-  }
-
-  // Clicking the superscript © on Allen© cycles all themes
-  if(logoStar){
-    logoStar.addEventListener('click', function(e){
-      e.preventDefault();
-      e.stopPropagation();
-      var current = document.documentElement.getAttribute('data-theme') || 'classic';
-      var nextIdx = (themes.indexOf(current) + 1) % themes.length;
-      applySecretTheme(themes[nextIdx]);
-    });
-  }
-
-  // Double-clicking the live clock activates Max's Orange Telemetry Mode
-  if(clock){
-    clock.addEventListener('dblclick', function(){
-      var cur = document.documentElement.getAttribute('data-theme');
-      applySecretTheme(cur === 'orange-telemetry' ? 'classic' : 'orange-telemetry');
-    });
-  }
-
-  // Double-clicking "Edition 2026 ✱" activates Messi's Albiceleste Mode
-  var editionTrigger = document.getElementById('editionTrigger');
-  if(editionTrigger){
-    editionTrigger.addEventListener('dblclick', function(){
-      var cur = document.documentElement.getAttribute('data-theme');
-      applySecretTheme(cur === 'albiceleste' ? 'classic' : 'albiceleste');
-    });
-  }
-
-  // Clicking section index numbers (01) - (05) or sector tags triggers Fastest Sector Purple
+  /* ---------- SECTOR INDEX CLICK FLASH ---------- */
   document.querySelectorAll('.section__index, .sector-tag').forEach(function(idxEl){
     idxEl.addEventListener('click', function(){
       var sec = idxEl.getAttribute('data-sector') || '1';
@@ -1496,35 +2137,34 @@ body.hud-open .mode-btn--hud,
         prog.classList.add('sector-purple');
         setTimeout(function(){ prog.classList.remove('sector-purple'); }, 1800);
       }
-      if(sec === '1' || sec === '3' || sec === '5'){
-        showToast('SECTOR 0' + sec + ' PURPLE · SIMPLY LOVELY (-0.331s)');
-      } else {
-        showToast('★ ★ ★ · ENCARNACIÓN #10');
-      }
+      showToast('🟣 SECTOR 0' + sec + ' PURPLE · SIMPLY LOVELY (-0.331s)');
     });
   });
 
-  // Secret Keyboard Buffer: type "33", "max", "1", "10", "messi", "goat", or "00"
+  /* ---------- KEYBOARD SHORTCUTS ('1', 'max', '33', 'tututudu', '0', 'messi', 'leo', '10', 'goat', 'ESC') ---------- */
   var keyBuffer = '';
   var keyTimer = null;
   window.addEventListener('keydown', function(e){
     if(e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+    if(e.key === 'Escape'){
+      setPortfolioTheme('classic');
+      keyBuffer = '';
+      return;
+    }
     if(e.key.length === 1){
-      keyBuffer = (keyBuffer + e.key.toLowerCase()).slice(-8);
+      keyBuffer = (keyBuffer + e.key.toLowerCase()).slice(-10);
       clearTimeout(keyTimer);
       keyTimer = setTimeout(function(){ keyBuffer = ''; }, 1600);
 
-      if(keyBuffer.endsWith('33') || keyBuffer.endsWith('max') || keyBuffer.endsWith('mv1')){
-        applySecretTheme('orange-telemetry');
+      if(e.key === '1' && keyBuffer.length === 1){
+        setPortfolioTheme('max');
+      } else if(e.key === '0' && keyBuffer.length === 1){
+        setPortfolioTheme('leo');
+      } else if(keyBuffer.endsWith('max') || keyBuffer.endsWith('33') || keyBuffer.endsWith('tututudu')){
+        setPortfolioTheme('max');
         keyBuffer = '';
-      } else if(keyBuffer.endsWith('10') || keyBuffer.endsWith('messi') || keyBuffer.endsWith('leo')){
-        applySecretTheme('albiceleste');
-        keyBuffer = '';
-      } else if(keyBuffer.endsWith('goat') || keyBuffer.endsWith('110')){
-        applySecretTheme('apex');
-        keyBuffer = '';
-      } else if(keyBuffer.endsWith('00') || keyBuffer.endsWith('reset')){
-        applySecretTheme('classic');
+      } else if(keyBuffer.endsWith('messi') || keyBuffer.endsWith('leo') || keyBuffer.endsWith('10') || keyBuffer.endsWith('goat')){
+        setPortfolioTheme('leo');
         keyBuffer = '';
       }
     }
@@ -1540,4 +2180,3 @@ body.hud-open .mode-btn--hud,
 </script>
 </body>
 </html>
-```
